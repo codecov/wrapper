@@ -1,3 +1,5 @@
+echo "Using wrapper"
+
 family=$(uname -s | tr '[:upper:]' '[:lower:]')
 codecov_os="windows"
 [[ $family == "darwin" ]] && codecov_os="macos"
