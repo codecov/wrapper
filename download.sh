@@ -1,4 +1,5 @@
-echo "Using wrapper"
+CODECOV_WRAPPER_VERSION="0.0.1"
+echo "Codecov wrapper version: ${CODECOV_WRAPPER_VERSION}"
 
 family=$(uname -s | tr '[:upper:]' '[:lower:]')
 codecov_os="windows"
