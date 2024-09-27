@@ -9,6 +9,7 @@ codecov_os="windows"
 [[ $codecov_os == "linux" ]] && \
   osID=$(grep -e "^ID=" /etc/os-release | cut -c4-)
 [[ $osID == "alpine" ]] && codecov_os="alpine"
+[[ $(arch) == "aarch64" && $family == "linux" ]] && codecov_os+="-arm64"
 echo "Detected ${codecov_os}"
 echo "export codecov_os=${codecov_os}" >> $BASH_ENV
 echo "export codecov_version=${PARAM_VERSION}" >> $BASH_ENV
