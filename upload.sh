@@ -29,7 +29,7 @@ if [ -n "$FLAGS" ]; then
 fi
 
 #create commit
-echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-commit -t <redacted>"
+echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-commit -t $CODECOV_TOKEN"
 
 ./$codecov_filename \
   ${CODECOV_CLI_ARGS} \
