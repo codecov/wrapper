@@ -59,3 +59,4 @@ echo "./${codecov_filename} ${CODECOV_CLI_ARGS} do-upload -t <redacted> -n \"${C
   ${FLAGS} \
   ${CODECOV_UPLOAD_ARGS} \
   ${@}
+echo $?
