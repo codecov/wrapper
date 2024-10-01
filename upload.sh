@@ -49,7 +49,7 @@ echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-report -t <redacted>"
 #upload reports
 # alpine doesn't allow for indirect expansion
 
-echo "./${codecov_filename} ${CODECOV_CLI_ARGS} do-upload -t <redacted> -n \"${CODECOV_UPLOAD_NAME}\" ${FLAGS} ${CODECOV_UPLOAD_ARGS} ${@}"
+echo "./${codecov_filename} ${CODECOV_CLI_ARGS} do-upload -Z -t <redacted> -n \"${CODECOV_UPLOAD_NAME}\" ${FLAGS} ${CODECOV_UPLOAD_ARGS} ${@}"
 
 ./$codecov_filename \
   ${CODECOV_CLI_ARGS} \
@@ -59,4 +59,3 @@ echo "./${codecov_filename} ${CODECOV_CLI_ARGS} do-upload -t <redacted> -n \"${C
   ${FLAGS} \
   ${CODECOV_UPLOAD_ARGS} \
   ${@}
-echo $?
