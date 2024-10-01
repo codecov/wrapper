@@ -54,6 +54,7 @@ echo "./${codecov_filename} ${CODECOV_CLI_ARGS} do-upload -Z -t <redacted> -n \"
 ./$codecov_filename \
   ${CODECOV_CLI_ARGS} \
   do-upload \
+  -Z \
   -t "$(eval echo \$$CODECOV_TOKEN)" \
   -n "${CODECOV_UPLOAD_NAME}" \
   ${FLAGS} \
