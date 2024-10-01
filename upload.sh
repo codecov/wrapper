@@ -34,7 +34,7 @@ echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-commit -t $CODECOV_TOKE
 ./$codecov_filename \
   ${CODECOV_CLI_ARGS} \
   create-commit \
-  -t "$(eval echo \$$CODECOV_TOKEN)" \
+  -t "$(eval echo $CODECOV_TOKEN)" \
   ${CODECOV_COMMIT_ARGS}
 
 #create report
@@ -43,7 +43,7 @@ echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-report -t <redacted>"
 ./$codecov_filename \
   ${CODECOV_CLI_ARGS} \
   create-report \
-  -t "$(eval echo \$$CODECOV_TOKEN)" \
+  -t "$(eval echo $CODECOV_TOKEN)" \
   ${CODECOV_REPORT_ARGS}
 
 #upload reports
@@ -55,7 +55,7 @@ echo "./${codecov_filename} ${CODECOV_CLI_ARGS} do-upload -Z -t <redacted> -n \"
   ${CODECOV_CLI_ARGS} \
   do-upload \
   -Z \
-  -t "$(eval echo \$$CODECOV_TOKEN)" \
+  -t "$(eval echo $CODECOV_TOKEN)" \
   -n "${CODECOV_UPLOAD_NAME}" \
   ${FLAGS} \
   ${CODECOV_UPLOAD_ARGS} \
