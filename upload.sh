@@ -1,20 +1,15 @@
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
-source $BASH_ENV
 
 chmod +x $codecov_filename
-[ -n "${PARAM_FILE}" ] && \
-  set - "${@}" "-f" "${PARAM_FILE}"
-[ -n "${PARAM_UPLOAD_ARGS}" ] && \
-  set - "${@}" "${PARAM_UPLOAD_ARGS}"
-
-if [ -z "${PARAM_UPLOAD_NAME}" ]; then
-  PARAM_UPLOAD_NAME="${CIRCLE_BUILD_NUM}"
-fi
+[ -n "${CODECOV_FILE}" ] && \
+  set - "${@}" "-f" "${CODECOV_FILE}"
+[ -n "${CODECOV_UPLOAD_ARGS}" ] && \
+  set - "${@}" "${CODECOV_UPLOAD_ARGS}"
 
 FLAGS=""
 OLDIFS=$IFS;IFS=,
-for flag in $PARAM_FLAGS; do
+for flag in $CODECOV_FLAGS; do
   eval e="\$$flag"
   for param in "${e}" "${flag}"; do
     if [ -n "${param}" ]; then
@@ -34,33 +29,33 @@ if [ -n "$FLAGS" ]; then
 fi
 
 #create commit
-echo "./\"$codecov_filename\" ${PARAM_CLI_ARGS} create-commit -t <redacted>"
+echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-commit -t <redacted>"
 
-./"$codecov_filename" \
-  ${PARAM_CLI_ARGS} \
+./$codecov_filename \
+  ${CODECOV_CLI_ARGS} \
   create-commit \
-  -t "$(eval echo \$$PARAM_TOKEN)" \
-  ${PARAM_COMMIT_ARGS}
+  -t "$(eval echo \$$CODECOV_TOKEN)" \
+  ${CODECOV_COMMIT_ARGS}
 
 #create report
-echo "./\"$codecov_filename\" ${PARAM_CLI_ARGS} create-report -t <redacted>"
+echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-report -t <redacted>"
 
-./"$codecov_filename" \
-  ${PARAM_CLI_ARGS} \
+./$codecov_filename \
+  ${CODECOV_CLI_ARGS} \
   create-report \
-  -t "$(eval echo \$$PARAM_TOKEN)" \
-  ${PARAM_REPORT_ARGS}
+  -t "$(eval echo \$$CODECOV_TOKEN)" \
+  ${CODECOV_REPORT_ARGS}
 
 #upload reports
 # alpine doesn't allow for indirect expansion
 
-echo "./${codecov_filename} ${PARAM_CLI_ARGS} do-upload -t <redacted> -n \"${PARAM_UPLOAD_NAME}\" ${FLAGS} ${PARAM_UPLOAD_ARGS} ${@}"
+echo "./${codecov_filename} ${CODECOV_CLI_ARGS} do-upload -t <redacted> -n \"${CODECOV_UPLOAD_NAME}\" ${FLAGS} ${CODECOV_UPLOAD_ARGS} ${@}"
 
-./"$codecov_filename" \
-  ${PARAM_CLI_ARGS} \
+./$codecov_filename \
+  ${CODECOV_CLI_ARGS} \
   do-upload \
-  -t "$(eval echo \$$PARAM_TOKEN)" \
-  -n "${PARAM_UPLOAD_NAME}" \
+  -t "$(eval echo \$$CODECOV_TOKEN)" \
+  -n "${CODECOV_UPLOAD_NAME}" \
   ${FLAGS} \
-  ${PARAM_UPLOAD_ARGS} \
+  ${CODECOV_UPLOAD_ARGS} \
   ${@}
