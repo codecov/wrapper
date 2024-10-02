@@ -7,15 +7,17 @@ chmod +x $codecov_filename
 
 token="$(eval echo $CODECOV_TOKEN)"
 say "$g ->$x Token of length ${#token} detected"
+token_str=""
 token_arg=()
 if [ -n $token ];
 then
+  token_str+=" -t <redacted>"
   token_arg+=( " -t " "$token")
 fi
 
 #create commit
 say "$g==>$x Running create-commit"
-say "      $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_commit_args$x"
+say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_create_commit_args$x"
 
 ./$codecov_filename \
   $codecov_cli_args \
@@ -27,7 +29,7 @@ say " "
 
 #create report
 say "$g==>$x Running create-report"
-say "      $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_report_args$x"
+say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_create_report_args$x"
 
 ./$codecov_filename \
   $codecov_cli_args \
@@ -40,7 +42,7 @@ say " "
 #upload reports
 # alpine doesn't allow for indirect expansion
 say "$g==>$x Running do-upload"
-say "      $b./$codecov_filename$codecov_cli_args do-upload$codecov_do_upload_args$x"
+say "      $b./$codecov_filename$codecov_cli_args do-upload$token_str$codecov_do_upload_args$x"
 
 ./$codecov_filename \
   $codecov_cli_args \
