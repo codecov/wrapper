@@ -77,11 +77,6 @@ then
   codecov_do_upload_args+=" --git-service ${CODECOV_GIT_SERVICE}"
 fi
 
-if [ "$CODECOV_FAIL_ON_ERROR" = "true" ];
-then
-  codecov_do_upload_args+=" --fail-on-error"
-fi
-
 if [ "$CODECOV_HANDLE_NO_REPORTS_FOUND" = "true" ];
 then
   codecov_do_upload_args+=" --handle-no-reports-found"
