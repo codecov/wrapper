@@ -19,11 +19,14 @@ fi
 say "$g==>$x Running create-commit"
 say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_create_commit_args$x"
 
-./$codecov_filename \
+if ! ./$codecov_filename \
   $codecov_cli_args \
   create-commit \
   ${token_arg[@]} \
-  ${codecov_create_commit_args[@]}
+  ${codecov_create_commit_args[@]};
+then
+  exit_if_error "Failed to create-commit"
+fi
 
 say " "
 
@@ -31,11 +34,14 @@ say " "
 say "$g==>$x Running create-report"
 say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_create_report_args$x"
 
-./$codecov_filename \
+if ! ./$codecov_filename \
   $codecov_cli_args \
   create-report \
   ${token_arg[@]} \
-  ${codecov_create_report_args[@]}
+  ${codecov_create_report_args[@]};
+then
+  exit_if_error "Failed to create-report"
+fi
 
 say " "
 
@@ -44,8 +50,11 @@ say " "
 say "$g==>$x Running do-upload"
 say "      $b./$codecov_filename$codecov_cli_args do-upload$token_str$codecov_do_upload_args$x"
 
-./$codecov_filename \
+if ! ./$codecov_filename \
   $codecov_cli_args \
   do-upload \
   ${token_arg[@]} \
-  ${codecov_do_upload_args[@]}
+  ${codecov_do_upload_args[@]};
+then
+  exit_if_error "Failed to upload"
+fi
