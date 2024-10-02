@@ -1,47 +1,30 @@
+#!/usr/bin/env bash
+
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
 
 chmod +x $codecov_filename
-[ -n "${CODECOV_FILE}" ] && \
-  set - "${@}" "-f" "${CODECOV_FILE}"
-[ -n "${CODECOV_UPLOAD_ARGS}" ] && \
-  set - "${@}" "${CODECOV_UPLOAD_ARGS}"
 
-FLAGS=""
-OLDIFS=$IFS;IFS=,
-for flag in $CODECOV_FLAGS; do
-  eval e="\$$flag"
-  for param in "${e}" "${flag}"; do
-    if [ -n "${param}" ]; then
-      if [ -n "${FLAGS}" ]; then
-        FLAGS="${FLAGS},${param}"
-      else
-        FLAGS="${param}"
-      fi
-      break
-    fi
-  done
-done
-IFS=$OLDIFS
-
-if [ -n "$FLAGS" ]; then
-  FLAGS="-F ${FLAGS}"
-fi
+token="$(eval echo $CODECOV_TOKEN)"
+say "$g ->$x Token of length ${#token} detected"
 
 #create commit
-echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-commit -t $CODECOV_TOKEN"
+say "$g==>$x Running create-commit"
+say "       $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_commit_args$x"
 
 ./$codecov_filename \
-  ${CODECOV_CLI_ARGS} \
+  $codecov_cli_args \
   create-commit \
-  -t "$(eval echo $CODECOV_TOKEN)" \
-  ${CODECOV_COMMIT_ARGS}
+  -t $token \
+  $codecov_create_commit_args
+
+say
 
 #create report
-echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-report -t <redacted>"
+say "./\"$codecov_filename\" $codecov_cli_args create-report -t <redacted>"
 
 ./$codecov_filename \
-  ${CODECOV_CLI_ARGS} \
+  $codecov_cli_args \
   create-report \
   -t "$(eval echo $CODECOV_TOKEN)" \
   ${CODECOV_REPORT_ARGS}
@@ -49,10 +32,10 @@ echo "./\"$codecov_filename\" ${CODECOV_CLI_ARGS} create-report -t <redacted>"
 #upload reports
 # alpine doesn't allow for indirect expansion
 
-echo "./${codecov_filename} ${CODECOV_CLI_ARGS} do-upload -Z -t <redacted> ${CODECOV_UPLOAD_ARGS} ${@}"
+say "./${codecov_filename} $codecov_cli_args do-upload -Z -t <redacted> ${CODECOV_UPLOAD_ARGS} ${@}"
 
 ./$codecov_filename \
-  ${CODECOV_CLI_ARGS} \
+  $codecov_cli_args \
   do-upload \
   -Z \
   -t "$(eval echo $CODECOV_TOKEN)" \

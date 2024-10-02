@@ -1,4 +1,4 @@
-echo "Codecov wrapper version: ${CODECOV_WRAPPER_VERSION}"
+#!/usr/bin/env bash
 
 family=$(uname -s | tr '[:upper:]' '[:lower:]')
 codecov_os="windows"
@@ -9,20 +9,20 @@ codecov_os="windows"
   osID=$(grep -e "^ID=" /etc/os-release | cut -c4-)
 [[ $osID == "alpine" ]] && codecov_os="alpine"
 [[ $(arch) == "aarch64" && $family == "linux" ]] && codecov_os+="-arm64"
-echo "Detected ${codecov_os}"
+say "$g==>$x Detected $b${codecov_os}$x"
 export codecov_os=${codecov_os}
 export codecov_version=${CODECOV_VERSION}
 
 codecov_filename="codecov"
 [[ $codecov_os == "windows" ]] && codecov_filename+=".exe"
 export codecov_filename=${codecov_filename}
-[[ $codecov_os == "macos" ]] && \
+[[ $codecov_os == "macos" ]]  && ! command -v gpg 2>&1 >/dev/null && \
   HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
 codecov_url="https://cli.codecov.io"
 codecov_url="$codecov_url/${CODECOV_VERSION}"
 codecov_url="$codecov_url/${codecov_os}/${codecov_filename}"
-echo "Downloading ${codecov_url}"
+say "$g ->$x Downloading $b${codecov_url}$x"
 curl -Os $codecov_url
 
-echo "Finishing downloading CLI ${CODECOV_VERSION}"
+say "$g==>$x Finishing downloading $b${codecov_os}:${CODECOV_VERSION}$x"
 echo ""
