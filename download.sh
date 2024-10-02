@@ -16,7 +16,8 @@ export codecov_version=${CODECOV_VERSION}
 codecov_filename="codecov"
 [[ $codecov_os == "windows" ]] && codecov_filename+=".exe"
 export codecov_filename=${codecov_filename}
-[[ $codecov_os == "macos" ]]  && ! command -v gpg 2>&1 >/dev/null && \
+[[ $codecov_os == "macos" ]]  && \
+  ! command -v gpg 2>&1 >/dev/null && \
   HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
 codecov_url="https://cli.codecov.io"
 codecov_url="$codecov_url/${CODECOV_VERSION}"
