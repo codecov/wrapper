@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-CODECOV_FLAGS="meow,rawr"
-
 . ./set_defaults.sh
 . ./download.sh
 . ./validate.sh
