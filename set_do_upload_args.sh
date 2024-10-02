@@ -46,7 +46,7 @@ fi
 
 if [ -n "$CODECOV_EXCLUDE_DIRS" ];
 then
-  for directory in$CODECOV_EXCLUDE_DIRS; do
+  for directory in $CODECOV_EXCLUDE_DIRS; do
     codecov_do_upload_args+=( " --exclude " "$directory" )
   done
 fi
@@ -58,14 +58,14 @@ fi
 
 if [ -n "$CODECOV_FILES" ];
 then
-  for file in$CODECOV_FILES; do
+  for file in $CODECOV_FILES; do
     codecov_do_upload_args+=( " --file " "$file" )
   done
 fi
 
 if [ -n "$CODECOV_FLAGS" ];
 then
-  for flag in$CODECOV_FLAGS; do
+  for flag in $CODECOV_FLAGS; do
     codecov_do_upload_args+=( " --flag " "$flag" )
   done
 fi
@@ -112,7 +112,7 @@ fi
 
 if [ -n "$CODECOV_PLUGINS" ];
 then
-  for plugin in$CODECOV_PLUGINS; do
+  for plugin in $CODECOV_PLUGINS; do
     codecov_do_upload_args+=( " --plugin " "$plugin" )
   done
 fi
