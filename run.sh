@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CODECOV_YML_PATH="codecov.yml"
+CODECOV_FLAGS="meow,rawr"
 
 . ./set_defaults.sh
 . ./download.sh

@@ -1,2 +1,4 @@
 __pycache__/
 .py[oc]
+codecov
+codecov.SHA256SUM*

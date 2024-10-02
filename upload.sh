@@ -21,7 +21,7 @@ say "      $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_c
   $codecov_cli_args \
   create-commit \
   $token_arg \
-  $codecov_create_commit_args
+  ${codecov_create_commit_args[@]}
 
 say " "
 
@@ -33,7 +33,7 @@ say "      $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_r
   $codecov_cli_args \
   create-report \
   $token_arg \
-  $codecov_create_report_args
+  ${codecov_create_report_args[@]}
 
 say " "
 
@@ -46,4 +46,4 @@ say "      $b./$codecov_filename$codecov_cli_args do-upload$codecov_do_upload_ar
   $codecov_cli_args \
   do-upload \
   $token_arg \
-  $codecov_do_upload_args
+  ${codecov_do_upload_args[@]}
