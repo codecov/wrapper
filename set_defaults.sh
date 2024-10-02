@@ -27,7 +27,7 @@ say "     _____          _
    | |    / _ \\ / _\` |/ _ \\/ __/ _ \\ \\ / /
    | |___| (_) | (_| |  __/ (_| (_) \\ V /
     \\_____\\___/ \\__,_|\\___|\\___\\___/ \\_/
-                            Wrapper-$CODECOV_WRAPPER_VERSION
+                           $r Wrapper-$CODECOV_WRAPPER_VERSION$x
                                   "
 
 CODECOV_VERSION="${CODECOV_VERSION:-latest}"
