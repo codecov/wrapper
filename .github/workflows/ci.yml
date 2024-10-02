@@ -1,5 +1,8 @@
+---
 name: Workflow for Codecov wrapper
-on: [push, pull_request]
+on:  # yamllint disable-line rule:truthy
+  - push
+  - pull_request
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -20,4 +23,3 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
           CODECOV_FLAGS: flag1,flag2
-
