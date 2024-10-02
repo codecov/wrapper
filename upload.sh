@@ -7,38 +7,43 @@ chmod +x $codecov_filename
 
 token="$(eval echo $CODECOV_TOKEN)"
 say "$g ->$x Token of length ${#token} detected"
+token_arg=""
+if [ -n $token ];
+then
+  token_arg+=" -t $token "
+fi
 
 #create commit
 say "$g==>$x Running create-commit"
-say "       $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_commit_args$x"
+say "      $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_commit_args$x"
 
 ./$codecov_filename \
   $codecov_cli_args \
   create-commit \
-  -t $token \
+  $token_arg \
   $codecov_create_commit_args
 
-say
+say " "
 
 #create report
-say "./\"$codecov_filename\" $codecov_cli_args create-report -t <redacted>"
+say "$g==>$x Running create-report"
+say "      $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_report_args$x"
 
 ./$codecov_filename \
   $codecov_cli_args \
   create-report \
-  -t "$(eval echo $CODECOV_TOKEN)" \
-  ${CODECOV_REPORT_ARGS}
+  $token_arg \
+  $codecov_create_report_args
+
+say " "
 
 #upload reports
 # alpine doesn't allow for indirect expansion
-
-say "./${codecov_filename} $codecov_cli_args do-upload -Z -t <redacted> ${CODECOV_UPLOAD_ARGS} ${@}"
+say "$g==>$x Running do-upload"
+say "      $b./$codecov_filename$codecov_cli_args do-upload$codecov_do_upload_args$x"
 
 ./$codecov_filename \
   $codecov_cli_args \
   do-upload \
-  -Z \
-  -t "$(eval echo $CODECOV_TOKEN)" \
-  ${FLAGS} \
-  ${CODECOV_UPLOAD_ARGS} \
-  ${@}
+  $token_arg \
+  $codecov_do_upload_args

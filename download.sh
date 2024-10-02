@@ -25,4 +25,4 @@ say "$g ->$x Downloading $b${codecov_url}$x"
 curl -Os $codecov_url
 
 say "$g==>$x Finishing downloading $b${codecov_os}:${CODECOV_VERSION}$x"
-say ""
+say " "

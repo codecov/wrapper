@@ -9,7 +9,8 @@ sha_url="${sha_url}/${codecov_version}/${codecov_os}"
 sha_url="${sha_url}/${codecov_filename}.SHA256SUM"
 say "$g ->$x Downloading $b${sha_url}$x"
 say "$g ->$x Downloading $b${sha_url}.sig$x"
-say ""
+say " "
+
 curl -Os "$sha_url"
 curl -Os "${sha_url}.sig"
 
