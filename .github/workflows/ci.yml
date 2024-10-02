@@ -19,4 +19,5 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
+          CODECOV_FLAGS: flag1,flag2
 
