@@ -7,10 +7,10 @@ chmod +x $codecov_filename
 
 token="$(eval echo $CODECOV_TOKEN)"
 say "$g ->$x Token of length ${#token} detected"
-token_arg=""
+token_arg=()
 if [ -n $token ];
 then
-  token_arg+=" -t $token "
+  token_arg+=( " -t " "$token")
 fi
 
 #create commit
@@ -20,7 +20,7 @@ say "      $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_c
 ./$codecov_filename \
   $codecov_cli_args \
   create-commit \
-  $token_arg \
+  ${token_arg[@]} \
   ${codecov_create_commit_args[@]}
 
 say " "
@@ -32,7 +32,7 @@ say "      $b./$codecov_filename$codecov_cli_args create-commit$codecov_create_r
 ./$codecov_filename \
   $codecov_cli_args \
   create-report \
-  $token_arg \
+  ${token_arg[@]} \
   ${codecov_create_report_args[@]}
 
 say " "
@@ -45,5 +45,5 @@ say "      $b./$codecov_filename$codecov_cli_args do-upload$codecov_do_upload_ar
 ./$codecov_filename \
   $codecov_cli_args \
   do-upload \
-  $token_arg \
+  ${token_arg[@]} \
   ${codecov_do_upload_args[@]}
