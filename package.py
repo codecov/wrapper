@@ -3,10 +3,13 @@ import re
 import stat
 
 
+BASH_LINE = '#!/usr/bin/env bash\n'
+
 def package_scripts(source_dir, source_root, outfile):
     cwd = os.getcwd()
     lines = _parse(os.path.join(cwd, source_dir, source_root))
     with open(outfile, 'w') as f:
+        f.write(BASH_LINE)
         for line in lines:
             f.write(line)
 
@@ -17,6 +20,9 @@ def _parse(file):
     lines = []
     with open(file, 'r') as f:
         for line in f.readlines():
+            if line == BASH_LINE:
+                continue
+
             script = _get_script_from_line(line)
             if script is not None:
                 lines.extend(_parse(os.path.join(os.path.dirname(file), script)))

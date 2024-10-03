@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-#!/usr/bin/env bash
-
-CODECOV_WRAPPER_VERSION="0.0.5"
-#!/usr/bin/env bash
+CODECOV_WRAPPER_VERSION="0.0.6"
 
 say() {
   echo -e "$1"
@@ -38,7 +35,6 @@ CODECOV_FAIL_ON_ERROR="${CODECOV_FAIL_ON_ERROR:-false}"
 say "$g ->$x$b CODECOV_VERSION$x = $CODECOV_VERSION"
 say "$g ->$x$b CODECOV_FAIL_ON_ERROR$x = $CODECOV_FAIL_ON_ERROR"
 say
-#!/usr/bin/env bash
 
 family=$(uname -s | tr '[:upper:]' '[:lower:]')
 codecov_os="windows"
@@ -67,7 +63,6 @@ curl -Os $codecov_url
 
 say "$g==>$x Finishing downloading $b${codecov_os}:${CODECOV_VERSION}$x"
 say " "
-#!/usr/bin/env bash
 
 cat ./pgp_keys.asc  | \
   gpg --no-default-keyring --import
@@ -96,7 +91,6 @@ fi
 say "$g==>$x CLI integrity verified"
 say
 
-#!/usr/bin/env bash
 
 codecov_cli_args=""
 
@@ -116,7 +110,6 @@ then
   codecov_cli_args+=" --codecov-yml-path ${CODECOV_YML_PATH}"
 fi
 
-#!/usr/bin/env bash
 
 codecov_create_commit_args=()
 
@@ -154,7 +147,6 @@ if [ -n "$CODECOV_SLUG" ];
 then
   codecov_create_commit_args+=( " --slug " "${CODECOV_SLUG}" )
 fi
-#!/usr/bin/env bash
 
 codecov_create_report_args=()
 
@@ -187,7 +179,6 @@ if [ -n "$CODECOV_SLUG" ];
 then
   codecov_create_report_args+=( " --slug " "${CODECOV_SLUG}" )
 fi
-#!/usr/bin/env bash
 
 codecov_do_upload_args=()
 
@@ -332,7 +323,6 @@ then
 fi
 
 IFS=$OLDIFS
-#!/usr/bin/env bash
 
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
