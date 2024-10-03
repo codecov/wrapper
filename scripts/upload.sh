@@ -5,7 +5,7 @@ unset NODE_OPTIONS
 
 chmod +x $codecov_filename
 
-if [ -n $CODECOV_TOKEN_VAR ];
+if [ -n "$CODECOV_TOKEN_VAR" ];
 then
   token="$(eval echo \$$CODECOV_TOKEN_VAR)"
 else
