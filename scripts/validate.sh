@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cat ./pgp_keys.asc  | \
+echo "${CODECOV_PUBLIC_PGP_KEY}"  | \
   gpg --no-default-keyring --import
 # One-time step
 say "$g==>$x Verifying GPG signature integrity"
