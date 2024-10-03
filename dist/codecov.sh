@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.11"
+CC_WRAPPER_VERSION="0.0.12"
 say() {
   echo -e "$1"
 }
@@ -88,7 +88,6 @@ if [ -n "$CC_YML_PATH" ];
 then
   codecov_cli_args+=" --codecov-yml-path ${CC_YML_PATH}"
 fi
-set -x
 codecov_cc_args=()
 if [ "$CC_FAIL_ON_ERROR" = "true" ];
 then

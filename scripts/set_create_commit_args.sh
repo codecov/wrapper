@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 codecov_cc_args=()
 
 if [ "$CODECOV_FAIL_ON_ERROR" = "true" ];
