@@ -23,13 +23,13 @@ fi
 
 #create commit
 say "$g==>$x Running create-commit"
-say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_create_commit_args$x"
+say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_cc_args$x"
 
 if ! ./$codecov_filename \
   $codecov_cli_args \
   create-commit \
   ${token_arg[@]} \
-  ${codecov_create_commit_args[@]};
+  ${codecov_cc_args[@]};
 then
   exit_if_error "Failed to create-commit"
 fi
@@ -38,13 +38,13 @@ say " "
 
 #create report
 say "$g==>$x Running create-report"
-say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_create_report_args$x"
+say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_cr_args$x"
 
 if ! ./$codecov_filename \
   $codecov_cli_args \
   create-report \
   ${token_arg[@]} \
-  ${codecov_create_report_args[@]};
+  ${codecov_cr_args[@]};
 then
   exit_if_error "Failed to create-report"
 fi
@@ -54,13 +54,13 @@ say " "
 #upload reports
 # alpine doesn't allow for indirect expansion
 say "$g==>$x Running do-upload"
-say "      $b./$codecov_filename$codecov_cli_args do-upload$token_str$codecov_do_upload_args$x"
+say "      $b./$codecov_filename$codecov_cli_args do-upload$token_str$codecov_du_args$x"
 
 if ! ./$codecov_filename \
   $codecov_cli_args \
   do-upload \
   ${token_arg[@]} \
-  ${codecov_do_upload_args[@]};
+  ${codecov_du_args[@]};
 then
   exit_if_error "Failed to upload"
 fi

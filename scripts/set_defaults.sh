@@ -16,7 +16,6 @@ exit_if_error() {
 b="\033[0;36m"  # variables/constants
 g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors
-y="\033[0;33m"  # warnings
 x="\033[0m"
 
 say "     _____          _
@@ -30,6 +29,4 @@ say "     _____          _
 
 CODECOV_VERSION="${CODECOV_VERSION:-latest}"
 CODECOV_FAIL_ON_ERROR="${CODECOV_FAIL_ON_ERROR:-false}"
-say "$g ->$x$b CODECOV_VERSION$x = $CODECOV_VERSION"
-say "$g ->$x$b CODECOV_FAIL_ON_ERROR$x = $CODECOV_FAIL_ON_ERROR"
 say
