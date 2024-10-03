@@ -3,4 +3,4 @@
 set -e
 
 python package.py
-git add run.sh
+git add dist/run.sh
