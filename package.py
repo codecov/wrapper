@@ -37,4 +37,4 @@ def _get_script_from_line(line):
         return matches.groups()[0]
 
 if __name__=="__main__":
-    package_scripts('scripts', 'run.sh', 'dist/run.sh')
+    package_scripts('scripts', 'run.sh', 'dist/codecov.sh')

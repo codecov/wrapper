@@ -3,4 +3,4 @@
 set -e
 
 python package.py
-git add dist/run.sh
+git add dist/codecov.sh
