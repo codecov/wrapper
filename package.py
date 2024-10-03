@@ -8,6 +8,7 @@ BASH_LINE = '#!/usr/bin/env bash\n'
 def package_scripts(source_dir, source_root, outfile):
     cwd = os.getcwd()
     lines = _parse(os.path.join(cwd, source_dir, source_root))
+
     with open(outfile, 'w') as f:
         f.write(BASH_LINE)
         for line in lines:
@@ -16,19 +17,28 @@ def package_scripts(source_dir, source_root, outfile):
     st = os.stat(outfile)
     os.chmod(outfile, st.st_mode | stat.S_IEXEC)
 
+    print(f"Current script is {len(''.join(lines))} chars.")
+    if len(''.join(lines)) > 8192:
+        print("Due to windows limitiations, script must be under 8192 chars.")
+        exit(1)
+
 def _parse(file):
     lines = []
     with open(file, 'r') as f:
         for line in f.readlines():
-            if line == BASH_LINE:
+            if line == BASH_LINE or line == '\n':
                 continue
 
             script = _get_script_from_line(line)
             if script is not None:
                 lines.extend(_parse(os.path.join(os.path.dirname(file), script)))
             else:
-                lines.append(line)
+                shortened_line = _shorten_line(line)
+                lines.append(shortened_line)
     return lines
+
+def _shorten_line(line):
+    return line.replace("CODECOV", "CC").replace("codecov", 'cc')
 
 def _get_script_from_line(line):
     matcher = r'\s*\. \.\/(\S+\.sh)$'  #. ./version.sh

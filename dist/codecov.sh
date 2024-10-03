@@ -1,394 +1,274 @@
 #!/usr/bin/env bash
-
-CODECOV_WRAPPER_VERSION="0.0.9"
-
-
+CC_WRAPPER_VERSION="0.0.10"
 say() {
   echo -e "$1"
 }
-
 exit_if_error() {
   say "$r==> $1$x"
-  if [ $CODECOV_FAIL_ON_ERROR = true ];
+  if [ $CC_FAIL_ON_ERROR = true ];
   then
      say "$r    Exiting...$x"
      exit 1;
   fi
 }
-
 b="\033[0;36m"  # variables/constants
 g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors
 y="\033[0;33m"  # warnings
 x="\033[0m"
-
 say "     _____          _
     / ____|        | |
    | |     ___   __| | ___  ___ _____   __
    | |    / _ \\ / _\` |/ _ \\/ __/ _ \\ \\ / /
    | |___| (_) | (_| |  __/ (_| (_) \\ V /
     \\_____\\___/ \\__,_|\\___|\\___\\___/ \\_/
-                           $r Wrapper-$CODECOV_WRAPPER_VERSION$x
+                           $r Wrapper-$CC_WRAPPER_VERSION$x
                                   "
-
-CODECOV_VERSION="${CODECOV_VERSION:-latest}"
-CODECOV_FAIL_ON_ERROR="${CODECOV_FAIL_ON_ERROR:-false}"
-say "$g ->$x$b CODECOV_VERSION$x = $CODECOV_VERSION"
-say "$g ->$x$b CODECOV_FAIL_ON_ERROR$x = $CODECOV_FAIL_ON_ERROR"
+CC_VERSION="${CC_VERSION:-latest}"
+CC_FAIL_ON_ERROR="${CC_FAIL_ON_ERROR:-false}"
+say "$g ->$x$b CC_VERSION$x = $CC_VERSION"
+say "$g ->$x$b CC_FAIL_ON_ERROR$x = $CC_FAIL_ON_ERROR"
 say
-
 family=$(uname -s | tr '[:upper:]' '[:lower:]')
-codecov_os="windows"
-[[ $family == "darwin" ]] && codecov_os="macos"
-
-[[ $family == "linux" ]] && codecov_os="linux"
-[[ $codecov_os == "linux" ]] && \
+cc_os="windows"
+[[ $family == "darwin" ]] && cc_os="macos"
+[[ $family == "linux" ]] && cc_os="linux"
+[[ $cc_os == "linux" ]] && \
   osID=$(grep -e "^ID=" /etc/os-release | cut -c4-)
-[[ $osID == "alpine" ]] && codecov_os="alpine"
-[[ $(arch) == "aarch64" && $family == "linux" ]] && codecov_os+="-arm64"
-say "$g==>$x Detected $b${codecov_os}$x"
-export codecov_os=${codecov_os}
-export codecov_version=${CODECOV_VERSION}
-
-codecov_filename="codecov"
-[[ $codecov_os == "windows" ]] && codecov_filename+=".exe"
-export codecov_filename=${codecov_filename}
-[[ $codecov_os == "macos" ]]  && \
+[[ $osID == "alpine" ]] && cc_os="alpine"
+[[ $(arch) == "aarch64" && $family == "linux" ]] && cc_os+="-arm64"
+say "$g==>$x Detected $b${cc_os}$x"
+export cc_os=${cc_os}
+export cc_version=${CC_VERSION}
+cc_filename="cc"
+[[ $cc_os == "windows" ]] && cc_filename+=".exe"
+export cc_filename=${cc_filename}
+[[ $cc_os == "macos" ]]  && \
   ! command -v gpg 2>&1 >/dev/null && \
   HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
-codecov_url="https://cli.codecov.io"
-codecov_url="$codecov_url/${CODECOV_VERSION}"
-codecov_url="$codecov_url/${codecov_os}/${codecov_filename}"
-say "$g ->$x Downloading $b${codecov_url}$x"
-curl -Os $codecov_url
-
-say "$g==>$x Finishing downloading $b${codecov_os}:${CODECOV_VERSION}$x"
+cc_url="https://cli.cc.io"
+cc_url="$cc_url/${CC_VERSION}"
+cc_url="$cc_url/${cc_os}/${cc_filename}"
+say "$g ->$x Downloading $b${cc_url}$x"
+curl -Os $cc_url
+say "$g==>$x Finishing downloading $b${cc_os}:${CC_VERSION}$x"
 say " "
-CODECOV_PUBLIC_PGP_KEY="-----BEGIN PGP PUBLIC KEY BLOCK-----
-
-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
-=ch7z
------END PGP PUBLIC KEY BLOCK-----"
-
-echo "${CODECOV_PUBLIC_PGP_KEY}"  | \
+CC_PUBLIC_PGP_KEY=$(curl https://keybase.io/ccsecurity/pgp_keys.asc)
+echo "${CC_PUBLIC_PGP_KEY}"  | \
   gpg --no-default-keyring --import
 # One-time step
 say "$g==>$x Verifying GPG signature integrity"
-sha_url="https://cli.codecov.io"
-sha_url="${sha_url}/${codecov_version}/${codecov_os}"
-sha_url="${sha_url}/${codecov_filename}.SHA256SUM"
+sha_url="https://cli.cc.io"
+sha_url="${sha_url}/${cc_version}/${cc_os}"
+sha_url="${sha_url}/${cc_filename}.SHA256SUM"
 say "$g ->$x Downloading $b${sha_url}$x"
 say "$g ->$x Downloading $b${sha_url}.sig$x"
 say " "
-
 curl -Os "$sha_url"
 curl -Os "${sha_url}.sig"
-
-if ! gpg --verify "${codecov_filename}.SHA256SUM.sig" "${codecov_filename}.SHA256SUM";
+if ! gpg --verify "${cc_filename}.SHA256SUM.sig" "${cc_filename}.SHA256SUM";
 then
   exit_if_error "Could not verify signature. Please contact Codecov if problem continues"
 fi
-
-if ! (shasum -a 256 -c "${codecov_filename}.SHA256SUM" || \
-  sha256sum -c "${codecov_filename}.SHA256SUM");
+if ! (shasum -a 256 -c "${cc_filename}.SHA256SUM" || \
+  sha256sum -c "${cc_filename}.SHA256SUM");
 then
   exit_if_error "Could not verify SHASUM. Please contact Codecov if problem continues"
 fi
 say "$g==>$x CLI integrity verified"
 say
-
-
-codecov_cli_args=""
-
-if [ -n "$CODECOV_AUTO_LOAD_PARAMS_FROM" ];
+cc_cli_args=""
+if [ -n "$CC_AUTO_LOAD_PARAMS_FROM" ];
 then
-  codecov_cli_args+=" --auto-load-params-from ${CODECOV_AUTO_LOAD_PARAMS_FROM}"
+  cc_cli_args+=" --auto-load-params-from ${CC_AUTO_LOAD_PARAMS_FROM}"
 fi
-
-if [ -n "$CODECOV_ENTERPRISE_URL" ];
+if [ -n "$CC_ENTERPRISE_URL" ];
 then
-  codecov_cli_args+=" --enterprise-url ${CODECOV_ENTERPRISE_URL}"
+  cc_cli_args+=" --enterprise-url ${CC_ENTERPRISE_URL}"
 fi
-
-unset CODECOV_YML_PATH
-if [ -n "$CODECOV_YML_PATH" ];
+unset CC_YML_PATH
+if [ -n "$CC_YML_PATH" ];
 then
-  codecov_cli_args+=" --codecov-yml-path ${CODECOV_YML_PATH}"
+  cc_cli_args+=" --cc-yml-path ${CC_YML_PATH}"
 fi
-
-
-codecov_create_commit_args=()
-
-if [ -n "$CODECOV_BRANCH" ];
+cc_create_commit_args=()
+if [ -n "$CC_BRANCH" ];
 then
-  codecov_create_commit_args+=( " --branch " "${CODECOV_BRANCH}" )
+  cc_create_commit_args+=( " --branch " "${CC_BRANCH}" )
 fi
-
-if [ "$CODECOV_FAIL_ON_ERROR" = "true" ];
+if [ "$CC_FAIL_ON_ERROR" = "true" ];
 then
-  codecov_create_commit_args+=( " --fail-on-error" )
+  cc_create_commit_args+=( " --fail-on-error" )
 fi
-
-if [ -n "$CODECOV_GIT_SERVICE" ];
+if [ -n "$CC_GIT_SERVICE" ];
 then
-  codecov_create_commit_args+=( " --git-service " "${CODECOV_GIT_SERVICE}" )
+  cc_create_commit_args+=( " --git-service " "${CC_GIT_SERVICE}" )
 fi
-
-if [ -n "$CODECOV_PARENT_SHA" ];
+if [ -n "$CC_PARENT_SHA" ];
 then
-  codecov_create_commit_args+=( " --parent-sha " "${CODECOV_PARENT_SHA}" )
+  cc_create_commit_args+=( " --parent-sha " "${CC_PARENT_SHA}" )
 fi
-
-if [ -n "$CODECOV_PULL_REQUEST" ];
+if [ -n "$CC_PULL_REQUEST" ];
 then
-  codecov_create_commit_args+=( " --pr " "${CODECOV_PULL_REQUEST}" )
+  cc_create_commit_args+=( " --pr " "${CC_PULL_REQUEST}" )
 fi
-
-if [ -n "$CODECOV_SHA" ];
+if [ -n "$CC_SHA" ];
 then
-  codecov_create_commit_args+=( " --sha " "${CODECOV_SHA}" )
+  cc_create_commit_args+=( " --sha " "${CC_SHA}" )
 fi
-
-if [ -n "$CODECOV_SLUG" ];
+if [ -n "$CC_SLUG" ];
 then
-  codecov_create_commit_args+=( " --slug " "${CODECOV_SLUG}" )
+  cc_create_commit_args+=( " --slug " "${CC_SLUG}" )
 fi
-
-codecov_create_report_args=()
-
-if [ -n "$CODECOV_CODE" ];
+cc_create_report_args=()
+if [ -n "$CC_CODE" ];
 then
-  codecov_create_report_args+=( " --code " "${CODECOV_CODE}" )
+  cc_create_report_args+=( " --code " "${CC_CODE}" )
 fi
-
-if [ "$CODECOV_FAIL_ON_ERROR" = "true" ];
+if [ "$CC_FAIL_ON_ERROR" = "true" ];
 then
-  codecov_create_report_args+=( " --fail-on-error" )
+  cc_create_report_args+=( " --fail-on-error" )
 fi
-
-if [ -n "$CODECOV_GIT_SERVICE" ];
+if [ -n "$CC_GIT_SERVICE" ];
 then
-  codecov_create_report_args+=( " --git-service " "${CODECOV_GIT_SERVICE}" )
+  cc_create_report_args+=( " --git-service " "${CC_GIT_SERVICE}" )
 fi
-
-if [ -n "$CODECOV_PULL_REQUEST" ];
+if [ -n "$CC_PULL_REQUEST" ];
 then
-  codecov_create_report_args+=( " --pr " "${CODECOV_PULL_REQUEST}" )
+  cc_create_report_args+=( " --pr " "${CC_PULL_REQUEST}" )
 fi
-
-if [ -n "$CODECOV_SHA" ];
+if [ -n "$CC_SHA" ];
 then
-  codecov_create_report_args+=( " --sha " "${CODECOV_SHA}" )
+  cc_create_report_args+=( " --sha " "${CC_SHA}" )
 fi
-
-if [ -n "$CODECOV_SLUG" ];
+if [ -n "$CC_SLUG" ];
 then
-  codecov_create_report_args+=( " --slug " "${CODECOV_SLUG}" )
+  cc_create_report_args+=( " --slug " "${CC_SLUG}" )
 fi
-
-codecov_do_upload_args=()
-
+cc_do_upload_args=()
 OLDIFS=$IFS;IFS=,
-
-if [ -n "$CODECOV_BRANCH" ];
+if [ -n "$CC_BRANCH" ];
 then
-  codecov_do_upload_args+=( " --branch " "${CODECOV_BRANCH}" )
+  cc_do_upload_args+=( " --branch " "${CC_BRANCH}" )
 fi
-
-if [ -n "$CODECOV_BUILD" ];
+if [ -n "$CC_BUILD" ];
 then
-  codecov_do_upload_args+=( " --build " "${CODECOV_BUILD}" )
+  cc_do_upload_args+=( " --build " "${CC_BUILD}" )
 fi
-
-if [ -n "$CODECOV_BUILD_URL" ];
+if [ -n "$CC_BUILD_URL" ];
 then
-  codecov_do_upload_args+=( " --build-url " "${CODECOV_BUILD_URL}" )
+  cc_do_upload_args+=( " --build-url " "${CC_BUILD_URL}" )
 fi
-
-if [ -n "$CODECOV_CODE" ];
+if [ -n "$CC_CODE" ];
 then
-  codecov_do_upload_args+=( " --code " "${CODECOV_CODE}" )
+  cc_do_upload_args+=( " --code " "${CC_CODE}" )
 fi
-
-if [ "$CODECOV_DISABLE_FILE_FIXES" = "true" ];
+if [ "$CC_DISABLE_FILE_FIXES" = "true" ];
 then
-  codecov_do_upload_args+=( " --disable-file-fixes" )
+  cc_do_upload_args+=( " --disable-file-fixes" )
 fi
-
-if [ "$CODECOV_DISABLE_SEARCH" = "true" ];
+if [ "$CC_DISABLE_SEARCH" = "true" ];
 then
-  codecov_do_upload_args+=( " --disable-search" )
+  cc_do_upload_args+=( " --disable-search" )
 fi
-
-if [ "$CODECOV_DRY_RUN" = "true" ];
+if [ "$CC_DRY_RUN" = "true" ];
 then
-  codecov_do_upload_args+=( " --dry-run" )
+  cc_do_upload_args+=( " --dry-run" )
 fi
-
-if [ -n "$CODECOV_ENV" ];
+if [ -n "$CC_ENV" ];
 then
-  codecov_do_upload_args+=( " --env " "${CODECOV_ENV}" )
+  cc_do_upload_args+=( " --env " "${CC_ENV}" )
 fi
-
-if [ -n "$CODECOV_EXCLUDE_DIRS" ];
+if [ -n "$CC_EXCLUDE_DIRS" ];
 then
-  for directory in $CODECOV_EXCLUDE_DIRS; do
-    codecov_do_upload_args+=( " --exclude " "$directory" )
+  for directory in $CC_EXCLUDE_DIRS; do
+    cc_do_upload_args+=( " --exclude " "$directory" )
   done
 fi
-
-if [ "$CODECOV_FAIL_ON_ERROR" = "true" ];
+if [ "$CC_FAIL_ON_ERROR" = "true" ];
 then
-  codecov_do_upload_args+=( " --fail-on-error" )
+  cc_do_upload_args+=( " --fail-on-error" )
 fi
-
-if [ -n "$CODECOV_FILES" ];
+if [ -n "$CC_FILES" ];
 then
-  for file in $CODECOV_FILES; do
-    codecov_do_upload_args+=( " --file " "$file" )
+  for file in $CC_FILES; do
+    cc_do_upload_args+=( " --file " "$file" )
   done
 fi
-
-if [ -n "$CODECOV_FLAGS" ];
+if [ -n "$CC_FLAGS" ];
 then
-  for flag in $CODECOV_FLAGS; do
-    codecov_do_upload_args+=( " --flag " "$flag" )
+  for flag in $CC_FLAGS; do
+    cc_do_upload_args+=( " --flag " "$flag" )
   done
 fi
-
-if [ -n "$CODECOV_GIT_SERVICE" ];
+if [ -n "$CC_GIT_SERVICE" ];
 then
-  codecov_do_upload_args+=( " --git-service " "${CODECOV_GIT_SERVICE}" )
+  cc_do_upload_args+=( " --git-service " "${CC_GIT_SERVICE}" )
 fi
-
-if [ "$CODECOV_HANDLE_NO_REPORTS_FOUND" = "true" ];
+if [ "$CC_HANDLE_NO_REPORTS_FOUND" = "true" ];
 then
-  codecov_do_upload_args+=( " --handle-no-reports-found" )
+  cc_do_upload_args+=( " --handle-no-reports-found" )
 fi
-
-if [ -n "$CODECOV_JOB_CODE" ];
+if [ -n "$CC_JOB_CODE" ];
 then
-  codecov_do_upload_args+=( " --job-code " "${CODECOV_JOB_CODE}" )
+  cc_do_upload_args+=( " --job-code " "${CC_JOB_CODE}" )
 fi
-
-if [ "$CODECOV_LEGACY" = "true" ];
+if [ "$CC_LEGACY" = "true" ];
 then
-  codecov_do_upload_args+=( " --legacy" )
+  cc_do_upload_args+=( " --legacy" )
 fi
-
-if [ -n "$CODECOV_NAME" ];
+if [ -n "$CC_NAME" ];
 then
-  codecov_do_upload_args+=( " --name " "${CODECOV_NAME}" )
+  cc_do_upload_args+=( " --name " "${CC_NAME}" )
 fi
-
-if [ -n "$CODECOV_NETWORK_FILTER" ];
+if [ -n "$CC_NETWORK_FILTER" ];
 then
-  codecov_do_upload_args+=( " --network-filter " "${CODECOV_NETWORK_FILTER}" )
+  cc_do_upload_args+=( " --network-filter " "${CC_NETWORK_FILTER}" )
 fi
-
-if [ -n "$CODECOV_NETWORK_PREFIX" ];
+if [ -n "$CC_NETWORK_PREFIX" ];
 then
-  codecov_do_upload_args+=( " --network-prefix " "${CODECOV_NETWORK_PREFIX}" )
+  cc_do_upload_args+=( " --network-prefix " "${CC_NETWORK_PREFIX}" )
 fi
-
-if [ -n "$CODECOV_NETWORK_ROOT_FOLDER" ];
+if [ -n "$CC_NETWORK_ROOT_FOLDER" ];
 then
-  codecov_do_upload_args+=( " --network-root-folder " "${CODECOV_NETWORK_ROOT_FOLDER}" )
+  cc_do_upload_args+=( " --network-root-folder " "${CC_NETWORK_ROOT_FOLDER}" )
 fi
-
-if [ -n "$CODECOV_PLUGINS" ];
+if [ -n "$CC_PLUGINS" ];
 then
-  for plugin in $CODECOV_PLUGINS; do
-    codecov_do_upload_args+=( " --plugin " "$plugin" )
+  for plugin in $CC_PLUGINS; do
+    cc_do_upload_args+=( " --plugin " "$plugin" )
   done
 fi
-
-if [ -n "$CODECOV_PULL_REQUEST" ];
+if [ -n "$CC_PULL_REQUEST" ];
 then
-  codecov_do_upload_args+=( " --pr " "${CODECOV_PULL_REQUEST}" )
+  cc_do_upload_args+=( " --pr " "${CC_PULL_REQUEST}" )
 fi
-
-if [ -n "$CODECOV_REPORT_TYPE" ];
+if [ -n "$CC_REPORT_TYPE" ];
 then
-  codecov_do_upload_args+=( " --report-type " "${CODECOV_REPORT_TYPE}" )
+  cc_do_upload_args+=( " --report-type " "${CC_REPORT_TYPE}" )
 fi
-
-if [ -n "$CODECOV_SEARCH_DIR" ];
+if [ -n "$CC_SEARCH_DIR" ];
 then
-  codecov_do_upload_args+=( " --coverage-files-search-root-folder " "${CODECOV_SEARCH_DIR}" )
+  cc_do_upload_args+=( " --coverage-files-search-root-folder " "${CC_SEARCH_DIR}" )
 fi
-
-if [ -n "$CODECOV_SHA" ];
+if [ -n "$CC_SHA" ];
 then
-  codecov_do_upload_args+=( " --sha " "${CODECOV_SHA}" )
+  cc_do_upload_args+=( " --sha " "${CC_SHA}" )
 fi
-
-if [ -n "$CODECOV_SLUG" ];
+if [ -n "$CC_SLUG" ];
 then
-  codecov_do_upload_args+=( " --slug " "${CODECOV_SLUG}" )
+  cc_do_upload_args+=( " --slug " "${CC_SLUG}" )
 fi
-
 IFS=$OLDIFS
-
 unset NODE_OPTIONS
-# See https://github.com/codecov/uploader/issues/475
-
-chmod +x $codecov_filename
-
-if [ -n "$CODECOV_TOKEN_VAR" ];
+# See https://github.com/cc/uploader/issues/475
+chmod +x $cc_filename
+if [ -n "$CC_TOKEN_VAR" ];
 then
-  token="$(eval echo \$$CODECOV_TOKEN_VAR)"
+  token="$(eval echo \$$CC_TOKEN_VAR)"
 else
-  token="$(eval echo $CODECOV_TOKEN)"
+  token="$(eval echo $CC_TOKEN)"
 fi
-
 say "$g ->$x Token of length ${#token} detected"
 token_str=""
 token_arg=()
@@ -397,47 +277,39 @@ then
   token_str+=" -t <redacted>"
   token_arg+=( " -t " "$token")
 fi
-
 #create commit
 say "$g==>$x Running create-commit"
-say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_create_commit_args$x"
-
-if ! ./$codecov_filename \
-  $codecov_cli_args \
+say "      $b./$cc_filename$cc_cli_args create-commit$token_str$cc_create_commit_args$x"
+if ! ./$cc_filename \
+  $cc_cli_args \
   create-commit \
   ${token_arg[@]} \
-  ${codecov_create_commit_args[@]};
+  ${cc_create_commit_args[@]};
 then
   exit_if_error "Failed to create-commit"
 fi
-
 say " "
-
 #create report
 say "$g==>$x Running create-report"
-say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_create_report_args$x"
-
-if ! ./$codecov_filename \
-  $codecov_cli_args \
+say "      $b./$cc_filename$cc_cli_args create-commit$token_str$cc_create_report_args$x"
+if ! ./$cc_filename \
+  $cc_cli_args \
   create-report \
   ${token_arg[@]} \
-  ${codecov_create_report_args[@]};
+  ${cc_create_report_args[@]};
 then
   exit_if_error "Failed to create-report"
 fi
-
 say " "
-
 #upload reports
 # alpine doesn't allow for indirect expansion
 say "$g==>$x Running do-upload"
-say "      $b./$codecov_filename$codecov_cli_args do-upload$token_str$codecov_do_upload_args$x"
-
-if ! ./$codecov_filename \
-  $codecov_cli_args \
+say "      $b./$cc_filename$cc_cli_args do-upload$token_str$cc_do_upload_args$x"
+if ! ./$cc_filename \
+  $cc_cli_args \
   do-upload \
   ${token_arg[@]} \
-  ${codecov_do_upload_args[@]};
+  ${cc_do_upload_args[@]};
 then
   exit_if_error "Failed to upload"
 fi
