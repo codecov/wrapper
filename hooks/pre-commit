@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e
+
+python package.py
+git add dist/codecov.sh
