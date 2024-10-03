@@ -3,7 +3,6 @@
 . ./version.sh
 . ./set_defaults.sh
 . ./download.sh
-. ./set_validation_key.sh
 . ./validate.sh
 
 . ./set_cli_args.sh

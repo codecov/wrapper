@@ -38,7 +38,7 @@ def _parse(file):
     return lines
 
 def _shorten_line(line):
-    return line.replace("CODECOV", "CC")
+    return line.replace("CODECOV", "CC").replace("codecov_", "cc_")
 
 def _get_script_from_line(line):
     matcher = r'\s*\. \.\/(\S+\.sh)$'  #. ./version.sh
