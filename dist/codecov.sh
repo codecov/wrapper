@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CODECOV_WRAPPER_VERSION="0.0.7"
+CODECOV_WRAPPER_VERSION="0.0.8"
 
 
 say() {
@@ -382,7 +382,13 @@ unset NODE_OPTIONS
 
 chmod +x $codecov_filename
 
-token="$(eval echo $CODECOV_TOKEN)"
+if [ -n "$CODECOV_TOKEN_VAR" ];
+then
+  token="$(eval echo \$$CODECOV_TOKEN_VAR)"
+else
+  token="$(eval echo $CODECOV_TOKEN)"
+fi
+
 say "$g ->$x Token of length ${#token} detected"
 token_str=""
 token_arg=()
