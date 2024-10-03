@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CODECOV_WRAPPER_VERSION="0.0.8"
+CODECOV_WRAPPER_VERSION="0.0.9"
 
 
 say() {
@@ -136,8 +136,8 @@ then
   exit_if_error "Could not verify signature. Please contact Codecov if problem continues"
 fi
 
-if ! shasum -a 256 -c "${codecov_filename}.SHA256SUM" && \
-  ! sha256sum -c "${codecov_filename}.SHA256SUM";
+if ! (shasum -a 256 -c "${codecov_filename}.SHA256SUM" || \
+  sha256sum -c "${codecov_filename}.SHA256SUM");
 then
   exit_if_error "Could not verify SHASUM. Please contact Codecov if problem continues"
 fi
