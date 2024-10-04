@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.14"
+CC_WRAPPER_VERSION="0.0.15"
 say() {
   echo -e "$1"
 }
@@ -107,6 +107,7 @@ cc_cli_args=()
 cc_cli_args+=( $(write_existing_args CC_AUTO_LOAD_PARAMS_FROM) )
 cc_cli_args+=( $(write_existing_args CC_ENTERPRISE_URL) )
 cc_cli_args+=( $(write_existing_args CC_YML_PATH) )
+cc_cli_args+=( $(write_truthy_args CC_VERBOSE) )
 cc_cc_args=()
 cc_cc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
 cc_cc_args+=( $(write_existing_args CC_GIT_SERVICE) )
