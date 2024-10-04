@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.15"
+CC_WRAPPER_VERSION="0.0.16"
 say() {
   echo -e "$1"
 }
@@ -12,18 +12,18 @@ exit_if_error() {
   fi
 }
 lower() {
-  echo $(echo $1 | sed 's/CC//' | sed 's/_/-//' | tr '[:upper:]' '[:lower:]')
+  echo $(echo $1 | sed 's/CC//' | sed 's/_/-/g' | tr '[:upper:]' '[:lower:]')
 }
 write_existing_args() {
-  if [ -n "$1" ];
+  if [ -n "$(eval echo \$$1)" ];
   then
-    echo " --$(lower $1) $(eval echo \$$1)"
+    echo " -$(lower "$1") $(eval echo \$$1)"
   fi
 }
 write_truthy_args() {
-  if [ "$1" = "true" ];
+  if [ "$(eval echo \$$1)" = "true" ];
   then
-    echo " --$(lower $1)"
+    echo " -$(lower $1)"
   fi
 }
 b="\033[0;36m"  # variables/constants
@@ -189,34 +189,34 @@ then
   token_arg+=( " -t " "$token")
 fi
 say "$g==>$x Running create-commit"
-say "      $b./$cc_filename$cc_cli_args create-commit$token_str$cc_cc_args$x"
+say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") create-commit$token_str $(echo "${cc_cc_args[@]}")$x"
 if ! ./$cc_filename \
-  ${cc_cli_args[@]} \
+  ${cc_cli_args[*]} \
   create-commit \
-  ${token_arg[@]} \
-  ${cc_cc_args[@]};
+  ${token_arg[*]} \
+  ${cc_cc_args[*]};
 then
   exit_if_error "Failed to create-commit"
 fi
 say " "
 say "$g==>$x Running create-report"
-say "      $b./$cc_filename$cc_cli_args create-commit$token_str$cc_cr_args$x"
+say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") create-report$token_str $(echo "${cc_cr_args[@]}")$x"
 if ! ./$cc_filename \
-  ${cc_cli_args[@]} \
+  ${cc_cli_args[*]} \
   create-report \
-  ${token_arg[@]} \
-  ${cc_cr_args[@]};
+  ${token_arg[*]} \
+  ${cc_cr_args[*]};
 then
   exit_if_error "Failed to create-report"
 fi
 say " "
 say "$g==>$x Running do-upload"
-say "      $b./$cc_filename$cc_cli_args do-upload$token_str$cc_du_args$x"
+say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") do-upload$token_str $(echo "${cc_du_args[@]}")$x"
 if ! ./$cc_filename \
-  ${cc_cli_args[@]} \
+  ${cc_cli_args[*]} \
   do-upload \
-  ${token_arg[@]} \
-  ${cc_du_args[@]};
+  ${token_arg[*]} \
+  ${cc_du_args[*]};
 then
   exit_if_error "Failed to upload"
 fi

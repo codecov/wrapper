@@ -22,36 +22,36 @@ then
 fi
 
 say "$g==>$x Running create-commit"
-say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_cc_args$x"
+say "      $b./$codecov_filename $(echo "${codecov_cli_args[@]}") create-commit$token_str $(echo "${codecov_cc_args[@]}")$x"
 if ! ./$codecov_filename \
-  ${codecov_cli_args[@]} \
+  ${codecov_cli_args[*]} \
   create-commit \
-  ${token_arg[@]} \
-  ${codecov_cc_args[@]};
+  ${token_arg[*]} \
+  ${codecov_cc_args[*]};
 then
   exit_if_error "Failed to create-commit"
 fi
 say " "
 
 say "$g==>$x Running create-report"
-say "      $b./$codecov_filename$codecov_cli_args create-commit$token_str$codecov_cr_args$x"
+say "      $b./$codecov_filename $(echo "${codecov_cli_args[@]}") create-report$token_str $(echo "${codecov_cr_args[@]}")$x"
 if ! ./$codecov_filename \
-  ${codecov_cli_args[@]} \
+  ${codecov_cli_args[*]} \
   create-report \
-  ${token_arg[@]} \
-  ${codecov_cr_args[@]};
+  ${token_arg[*]} \
+  ${codecov_cr_args[*]};
 then
   exit_if_error "Failed to create-report"
 fi
 say " "
 
 say "$g==>$x Running do-upload"
-say "      $b./$codecov_filename$codecov_cli_args do-upload$token_str$codecov_du_args$x"
+say "      $b./$codecov_filename $(echo "${codecov_cli_args[@]}") do-upload$token_str $(echo "${codecov_du_args[@]}")$x"
 if ! ./$codecov_filename \
-  ${codecov_cli_args[@]} \
+  ${codecov_cli_args[*]} \
   do-upload \
-  ${token_arg[@]} \
-  ${codecov_du_args[@]};
+  ${token_arg[*]} \
+  ${codecov_du_args[*]};
 then
   exit_if_error "Failed to upload"
 fi

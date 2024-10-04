@@ -14,20 +14,20 @@ exit_if_error() {
 }
 
 lower() {
-  echo $(echo $1 | sed 's/CODECOV//' | sed 's/_/-//' | tr '[:upper:]' '[:lower:]')
+  echo $(echo $1 | sed 's/CODECOV//' | sed 's/_/-/g' | tr '[:upper:]' '[:lower:]')
 }
 
 write_existing_args() {
-  if [ -n "$1" ];
+  if [ -n "$(eval echo \$$1)" ];
   then
-    echo " --$(lower $1) $(eval echo \$$1)"
+    echo " -$(lower "$1") $(eval echo \$$1)"
   fi
 }
 
 write_truthy_args() {
-  if [ "$1" = "true" ];
+  if [ "$(eval echo \$$1)" = "true" ];
   then
-    echo " --$(lower $1)"
+    echo " -$(lower $1)"
   fi
 }
 
