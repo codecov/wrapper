@@ -9,18 +9,30 @@ def package_scripts(source_dir, source_root, outfile):
     cwd = os.getcwd()
     lines = _parse(os.path.join(cwd, source_dir, source_root))
 
+    cc_vars = set()
     with open(outfile, 'w') as f:
         f.write(BASH_LINE)
         for line in lines:
+            cc_vars.update(_get_vars(line))
             f.write(line)
 
     st = os.stat(outfile)
     os.chmod(outfile, st.st_mode | stat.S_IEXEC)
 
+    with open('env', 'w') as f:
+        sorted_vars = sorted(list(cc_vars))
+        for var in sorted_vars:
+            f.write(f'{var}\n')
+
     print(f"Current script is {len(''.join(lines))} chars.")
     if len(''.join(lines)) > 8192:
         print("Due to windows limitiations, script must be under 8192 chars.")
         exit(1)
+
+def _get_vars(line):
+    matcher = r'(CC_[^\r\n\t\f\v=]+)*'
+    matcher = r'(CC_[\w_]+)*'
+    return re.findall(matcher, line)
 
 def _parse(file):
     lines = []

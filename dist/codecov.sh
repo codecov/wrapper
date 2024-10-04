@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.13"
+CC_WRAPPER_VERSION="0.0.14"
 say() {
   echo -e "$1"
 }
@@ -9,6 +9,21 @@ exit_if_error() {
   then
      say "$r    Exiting...$x"
      exit 1;
+  fi
+}
+lower() {
+  echo $(echo $1 | sed 's/CC//' | sed 's/_/-//' | tr '[:upper:]' '[:lower:]')
+}
+write_existing_args() {
+  if [ -n "$1" ];
+  then
+    echo " --$(lower $1) $(eval echo \$$1)"
+  fi
+}
+write_truthy_args() {
+  if [ "$1" = "true" ];
+  then
+    echo " --$(lower $1)"
   fi
 }
 b="\033[0;36m"  # variables/constants
@@ -25,7 +40,6 @@ say "     _____          _
                                   "
 CC_VERSION="${CC_VERSION:-latest}"
 CC_FAIL_ON_ERROR="${CC_FAIL_ON_ERROR:-false}"
-say
 if [ -n "$CC_BINARY" ];
 then
   if [ -f "$CC_BINARY" ];
@@ -90,113 +104,41 @@ CC_PUBLIC_PGP_KEY=$(curl https://keybase.io/codecovsecurity/pgp_keys.asc)
   say
 fi
 cc_cli_args=()
-if [ -n "$CC_AUTO_LOAD_PARAMS_FROM" ];
-then
-  cc_cli_args+=( " --auto-load-params-from " "${CC_AUTO_LOAD_PARAMS_FROM}" )
-fi
-if [ -n "$CC_ENTERPRISE_URL" ];
-then
-  cc_cli_args+=( " --enterprise-url " "${CC_ENTERPRISE_URL}" )
-fi
-unset CC_YML_PATH
-if [ -n "$CC_YML_PATH" ];
-then
-  cc_cli_args+=( " --codecov-yml-path " "${CC_YML_PATH}" )
-fi
+cc_cli_args+=( $(write_existing_args CC_AUTO_LOAD_PARAMS_FROM) )
+cc_cli_args+=( $(write_existing_args CC_ENTERPRISE_URL) )
+cc_cli_args+=( $(write_existing_args CC_YML_PATH) )
 cc_cc_args=()
-if [ "$CC_FAIL_ON_ERROR" = "true" ];
-then
-  cc_cc_args+=( " --fail-on-error" )
-fi
-if [ -n "$CC_GIT_SERVICE" ];
-then
-  cc_cc_args+=( " --git-service " "${CC_GIT_SERVICE}" )
-fi
-if [ -n "$CC_PARENT_SHA" ];
-then
-  cc_cc_args+=( " --parent-sha " "${CC_PARENT_SHA}" )
-fi
-if [ -n "$CC_PULL_REQUEST" ];
-then
-  cc_cc_args+=( " --pr " "${CC_PULL_REQUEST}" )
-fi
-if [ -n "$CC_SHA" ];
-then
-  cc_cc_args+=( " --sha " "${CC_SHA}" )
-fi
-if [ -n "$CC_SLUG" ];
-then
-  cc_cc_args+=( " --slug " "${CC_SLUG}" )
-fi
+cc_cc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
+cc_cc_args+=( $(write_existing_args CC_GIT_SERVICE) )
+cc_cc_args+=( $(write_existing_args CC_PARENT_SHA) )
+cc_cc_args+=( $(write_existing_args CC_PR) )
+cc_cc_args+=( $(write_existing_args CC_SHA) )
+cc_cc_args+=( $(write_existing_args CC_SLUG) )
 cc_create_report_args=()
-if [ -n "$CC_CODE" ];
-then
-  cc_cr_args+=( " --code " "${CC_CODE}" )
-fi
-if [ "$CC_FAIL_ON_ERROR" = "true" ];
-then
-  cc_cr_args+=( " --fail-on-error" )
-fi
-if [ -n "$CC_GIT_SERVICE" ];
-then
-  cc_cr_args+=( " --git-service " "${CC_GIT_SERVICE}" )
-fi
-if [ -n "$CC_PULL_REQUEST" ];
-then
-  cc_cr_args+=( " --pr " "${CC_PULL_REQUEST}" )
-fi
-if [ -n "$CC_SHA" ];
-then
-  cc_cr_args+=( " --sha " "${CC_SHA}" )
-fi
-if [ -n "$CC_SLUG" ];
-then
-  cc_cr_args+=( " --slug " "${CC_SLUG}" )
-fi
+cc_cr_args+=( $(write_existing_args CC_CODE) )
+cc_cr_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
+cc_cr_args+=( $(write_existing_args CC_GIT_SERVICE) )
+cc_cr_args+=( $(write_existing_args CC_PR) )
+cc_cr_args+=( $(write_existing_args CC_SHA) )
+cc_cr_args+=( $(write_existing_args CC_SLUG) )
 cc_du_args=()
 OLDIFS=$IFS;IFS=,
-if [ -n "$CC_BRANCH" ];
+cc_du_args+=( $(write_existing_args CC_BRANCH) )
+cc_du_args+=( $(write_existing_args CC_BUILD) )
+cc_du_args+=( $(write_existing_args CC_BUILD_URL) )
+cc_du_args+=( $(write_existing_args CC_CODE) )
+cc_du_args+=( $(write_existing_args CC_DIR) )
+cc_du_args+=( $(write_truthy_args CC_DISABLE_FILE_FIXES) )
+cc_du_args+=( $(write_truthy_args CC_DISABLE_SEARCH) )
+cc_du_args+=( $(write_truthy_args CC_DRY_RUN) )
+cc_du_args+=( $(write_existing_args CC_ENV) )
+if [ -n "$CC_EXCLUDES" ];
 then
-  cc_du_args+=( " --branch " "${CC_BRANCH}" )
-fi
-if [ -n "$CC_BUILD" ];
-then
-  cc_du_args+=( " --build " "${CC_BUILD}" )
-fi
-if [ -n "$CC_BUILD_URL" ];
-then
-  cc_du_args+=( " --build-url " "${CC_BUILD_URL}" )
-fi
-if [ -n "$CC_CODE" ];
-then
-  cc_du_args+=( " --code " "${CC_CODE}" )
-fi
-if [ "$CC_DISABLE_FILE_FIXES" = "true" ];
-then
-  cc_du_args+=( " --disable-file-fixes" )
-fi
-if [ "$CC_DISABLE_SEARCH" = "true" ];
-then
-  cc_du_args+=( " --disable-search" )
-fi
-if [ "$CC_DRY_RUN" = "true" ];
-then
-  cc_du_args+=( " --dry-run" )
-fi
-if [ -n "$CC_ENV" ];
-then
-  cc_du_args+=( " --env " "${CC_ENV}" )
-fi
-if [ -n "$CC_EXCLUDE_DIRS" ];
-then
-  for directory in $CC_EXCLUDE_DIRS; do
+  for directory in $CC_EXCLUDES; do
     cc_du_args+=( " --exclude " "$directory" )
   done
 fi
-if [ "$CC_FAIL_ON_ERROR" = "true" ];
-then
-  cc_du_args+=( " --fail-on-error" )
-fi
+cc_du_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
 if [ -n "$CC_FILES" ];
 then
   for file in $CC_FILES; do
@@ -209,64 +151,24 @@ then
     cc_du_args+=( " --flag " "$flag" )
   done
 fi
-if [ -n "$CC_GIT_SERVICE" ];
-then
-  cc_du_args+=( " --git-service " "${CC_GIT_SERVICE}" )
-fi
-if [ "$CC_HANDLE_NO_REPORTS_FOUND" = "true" ];
-then
-  cc_du_args+=( " --handle-no-reports-found" )
-fi
-if [ -n "$CC_JOB_CODE" ];
-then
-  cc_du_args+=( " --job-code " "${CC_JOB_CODE}" )
-fi
-if [ "$CC_LEGACY" = "true" ];
-then
-  cc_du_args+=( " --legacy" )
-fi
-if [ -n "$CC_NAME" ];
-then
-  cc_du_args+=( " --name " "${CC_NAME}" )
-fi
-if [ -n "$CC_NETWORK_FILTER" ];
-then
-  cc_du_args+=( " --network-filter " "${CC_NETWORK_FILTER}" )
-fi
-if [ -n "$CC_NETWORK_PREFIX" ];
-then
-  cc_du_args+=( " --network-prefix " "${CC_NETWORK_PREFIX}" )
-fi
-if [ -n "$CC_NETWORK_ROOT_FOLDER" ];
-then
-  cc_du_args+=( " --network-root-folder " "${CC_NETWORK_ROOT_FOLDER}" )
-fi
+cc_du_args+=( $(write_existing_args CC_GIT_SERVICE) )
+cc_du_args+=( $(write_truthy_args CC_HANDLE_NO_REPORTS_FOUND) )
+cc_du_args+=( $(write_existing_args CC_JOB_CODE) )
+cc_du_args+=( $(write_truthy_args CC_LEGACY) )
+cc_du_args+=( $(write_existing_args CC_NAME) )
+cc_du_args+=( $(write_existing_args CC_NETWORK_FILTER) )
+cc_du_args+=( $(write_existing_args CC_NETWORK_PREFIX) )
+cc_du_args+=( $(write_existing_args CC_NETWORK_ROOT_FOLDER) )
 if [ -n "$CC_PLUGINS" ];
 then
   for plugin in $CC_PLUGINS; do
     cc_du_args+=( " --plugin " "$plugin" )
   done
 fi
-if [ -n "$CC_PULL_REQUEST" ];
-then
-  cc_du_args+=( " --pr " "${CC_PULL_REQUEST}" )
-fi
-if [ -n "$CC_REPORT_TYPE" ];
-then
-  cc_du_args+=( " --report-type " "${CC_REPORT_TYPE}" )
-fi
-if [ -n "$CC_SEARCH_DIR" ];
-then
-  cc_du_args+=( " --coverage-files-search-root-folder " "${CC_SEARCH_DIR}" )
-fi
-if [ -n "$CC_SHA" ];
-then
-  cc_du_args+=( " --sha " "${CC_SHA}" )
-fi
-if [ -n "$CC_SLUG" ];
-then
-  cc_du_args+=( " --slug " "${CC_SLUG}" )
-fi
+cc_du_args+=( $(write_existing_args CC_PR) )
+cc_du_args+=( $(write_existing_args CC_REPORT_TYPE) )
+cc_du_args+=( $(write_existing_args CC_SHA) )
+cc_du_args+=( $(write_existing_args CC_SLUG) )
 IFS=$OLDIFS
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475

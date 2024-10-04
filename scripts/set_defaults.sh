@@ -13,6 +13,24 @@ exit_if_error() {
   fi
 }
 
+lower() {
+  echo $(echo $1 | sed 's/CODECOV//' | sed 's/_/-//' | tr '[:upper:]' '[:lower:]')
+}
+
+write_existing_args() {
+  if [ -n "$1" ];
+  then
+    echo " --$(lower $1) $(eval echo \$$1)"
+  fi
+}
+
+write_truthy_args() {
+  if [ "$1" = "true" ];
+  then
+    echo " --$(lower $1)"
+  fi
+}
+
 b="\033[0;36m"  # variables/constants
 g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors
@@ -29,4 +47,3 @@ say "     _____          _
 
 CODECOV_VERSION="${CODECOV_VERSION:-latest}"
 CODECOV_FAIL_ON_ERROR="${CODECOV_FAIL_ON_ERROR:-false}"
-say

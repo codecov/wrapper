@@ -4,57 +4,24 @@ codecov_du_args=()
 
 OLDIFS=$IFS;IFS=,
 
-if [ -n "$CODECOV_BRANCH" ];
-then
-  codecov_du_args+=( " --branch " "${CODECOV_BRANCH}" )
-fi
+codecov_du_args+=( $(write_existing_args CODECOV_BRANCH) )
+codecov_du_args+=( $(write_existing_args CODECOV_BUILD) )
+codecov_du_args+=( $(write_existing_args CODECOV_BUILD_URL) )
+codecov_du_args+=( $(write_existing_args CODECOV_CODE) )
+codecov_du_args+=( $(write_existing_args CODECOV_DIR) )
+codecov_du_args+=( $(write_truthy_args CODECOV_DISABLE_FILE_FIXES) )
+codecov_du_args+=( $(write_truthy_args CODECOV_DISABLE_SEARCH) )
+codecov_du_args+=( $(write_truthy_args CODECOV_DRY_RUN) )
+codecov_du_args+=( $(write_existing_args CODECOV_ENV) )
 
-if [ -n "$CODECOV_BUILD" ];
+if [ -n "$CODECOV_EXCLUDES" ];
 then
-  codecov_du_args+=( " --build " "${CODECOV_BUILD}" )
-fi
-
-if [ -n "$CODECOV_BUILD_URL" ];
-then
-  codecov_du_args+=( " --build-url " "${CODECOV_BUILD_URL}" )
-fi
-
-if [ -n "$CODECOV_CODE" ];
-then
-  codecov_du_args+=( " --code " "${CODECOV_CODE}" )
-fi
-
-if [ "$CODECOV_DISABLE_FILE_FIXES" = "true" ];
-then
-  codecov_du_args+=( " --disable-file-fixes" )
-fi
-
-if [ "$CODECOV_DISABLE_SEARCH" = "true" ];
-then
-  codecov_du_args+=( " --disable-search" )
-fi
-
-if [ "$CODECOV_DRY_RUN" = "true" ];
-then
-  codecov_du_args+=( " --dry-run" )
-fi
-
-if [ -n "$CODECOV_ENV" ];
-then
-  codecov_du_args+=( " --env " "${CODECOV_ENV}" )
-fi
-
-if [ -n "$CODECOV_EXCLUDE_DIRS" ];
-then
-  for directory in $CODECOV_EXCLUDE_DIRS; do
+  for directory in $CODECOV_EXCLUDES; do
     codecov_du_args+=( " --exclude " "$directory" )
   done
 fi
 
-if [ "$CODECOV_FAIL_ON_ERROR" = "true" ];
-then
-  codecov_du_args+=( " --fail-on-error" )
-fi
+codecov_du_args+=( $(write_truthy_args CODECOV_FAIL_ON_ERROR) )
 
 if [ -n "$CODECOV_FILES" ];
 then
@@ -70,45 +37,14 @@ then
   done
 fi
 
-if [ -n "$CODECOV_GIT_SERVICE" ];
-then
-  codecov_du_args+=( " --git-service " "${CODECOV_GIT_SERVICE}" )
-fi
-
-if [ "$CODECOV_HANDLE_NO_REPORTS_FOUND" = "true" ];
-then
-  codecov_du_args+=( " --handle-no-reports-found" )
-fi
-
-if [ -n "$CODECOV_JOB_CODE" ];
-then
-  codecov_du_args+=( " --job-code " "${CODECOV_JOB_CODE}" )
-fi
-
-if [ "$CODECOV_LEGACY" = "true" ];
-then
-  codecov_du_args+=( " --legacy" )
-fi
-
-if [ -n "$CODECOV_NAME" ];
-then
-  codecov_du_args+=( " --name " "${CODECOV_NAME}" )
-fi
-
-if [ -n "$CODECOV_NETWORK_FILTER" ];
-then
-  codecov_du_args+=( " --network-filter " "${CODECOV_NETWORK_FILTER}" )
-fi
-
-if [ -n "$CODECOV_NETWORK_PREFIX" ];
-then
-  codecov_du_args+=( " --network-prefix " "${CODECOV_NETWORK_PREFIX}" )
-fi
-
-if [ -n "$CODECOV_NETWORK_ROOT_FOLDER" ];
-then
-  codecov_du_args+=( " --network-root-folder " "${CODECOV_NETWORK_ROOT_FOLDER}" )
-fi
+codecov_du_args+=( $(write_existing_args CODECOV_GIT_SERVICE) )
+codecov_du_args+=( $(write_truthy_args CODECOV_HANDLE_NO_REPORTS_FOUND) )
+codecov_du_args+=( $(write_existing_args CODECOV_JOB_CODE) )
+codecov_du_args+=( $(write_truthy_args CODECOV_LEGACY) )
+codecov_du_args+=( $(write_existing_args CODECOV_NAME) )
+codecov_du_args+=( $(write_existing_args CODECOV_NETWORK_FILTER) )
+codecov_du_args+=( $(write_existing_args CODECOV_NETWORK_PREFIX) )
+codecov_du_args+=( $(write_existing_args CODECOV_NETWORK_ROOT_FOLDER) )
 
 if [ -n "$CODECOV_PLUGINS" ];
 then
@@ -117,29 +53,9 @@ then
   done
 fi
 
-if [ -n "$CODECOV_PULL_REQUEST" ];
-then
-  codecov_du_args+=( " --pr " "${CODECOV_PULL_REQUEST}" )
-fi
-
-if [ -n "$CODECOV_REPORT_TYPE" ];
-then
-  codecov_du_args+=( " --report-type " "${CODECOV_REPORT_TYPE}" )
-fi
-
-if [ -n "$CODECOV_SEARCH_DIR" ];
-then
-  codecov_du_args+=( " --coverage-files-search-root-folder " "${CODECOV_SEARCH_DIR}" )
-fi
-
-if [ -n "$CODECOV_SHA" ];
-then
-  codecov_du_args+=( " --sha " "${CODECOV_SHA}" )
-fi
-
-if [ -n "$CODECOV_SLUG" ];
-then
-  codecov_du_args+=( " --slug " "${CODECOV_SLUG}" )
-fi
+codecov_du_args+=( $(write_existing_args CODECOV_PR) )
+codecov_du_args+=( $(write_existing_args CODECOV_REPORT_TYPE) )
+codecov_du_args+=( $(write_existing_args CODECOV_SHA) )
+codecov_du_args+=( $(write_existing_args CODECOV_SLUG) )
 
 IFS=$OLDIFS
