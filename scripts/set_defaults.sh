@@ -25,7 +25,7 @@ write_existing_args() {
 }
 
 write_truthy_args() {
-  if [ "$(eval echo \$$1)" = "true" ];
+  if [ "$(eval echo \$$1)" = "true" ] || [ "$(eval echo \$$1)" = "1" ];
   then
     echo " -$(lower $1)"
   fi

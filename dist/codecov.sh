@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.16"
+CC_WRAPPER_VERSION="0.0.17"
 say() {
   echo -e "$1"
 }
@@ -21,7 +21,7 @@ write_existing_args() {
   fi
 }
 write_truthy_args() {
-  if [ "$(eval echo \$$1)" = "true" ];
+  if [ "$(eval echo \$$1)" = "true" ] || [ "$(eval echo \$$1)" = "1" ];
   then
     echo " -$(lower $1)"
   fi
