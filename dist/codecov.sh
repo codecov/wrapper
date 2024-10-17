@@ -152,6 +152,10 @@ then
     cc_du_args+=( " --flag " "$flag" )
   done
 fi
+cc_du_args+=( $(write_existing_args CC_GCOV_ARGS) )
+cc_du_args+=( $(write_existing_args CC_GCOV_EXECUTABLE) )
+cc_du_args+=( $(write_existing_args CC_GCOV_IGNORE) )
+cc_du_args+=( $(write_existing_args CC_GCOV_INCLUDE) )
 cc_du_args+=( $(write_existing_args CC_GIT_SERVICE) )
 cc_du_args+=( $(write_truthy_args CC_HANDLE_NO_REPORTS_FOUND) )
 cc_du_args+=( $(write_existing_args CC_JOB_CODE) )
@@ -170,6 +174,7 @@ cc_du_args+=( $(write_existing_args CC_PR) )
 cc_du_args+=( $(write_existing_args CC_REPORT_TYPE) )
 cc_du_args+=( $(write_existing_args CC_SHA) )
 cc_du_args+=( $(write_existing_args CC_SLUG) )
+cc_du_args+=( $(write_existing_args CC_SWIFT_PROJECT) )
 IFS=$OLDIFS
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475

@@ -37,6 +37,10 @@ then
   done
 fi
 
+codecov_du_args+=( $(write_existing_args CODECOV_GCOV_ARGS) )
+codecov_du_args+=( $(write_existing_args CODECOV_GCOV_EXECUTABLE) )
+codecov_du_args+=( $(write_existing_args CODECOV_GCOV_IGNORE) )
+codecov_du_args+=( $(write_existing_args CODECOV_GCOV_INCLUDE) )
 codecov_du_args+=( $(write_existing_args CODECOV_GIT_SERVICE) )
 codecov_du_args+=( $(write_truthy_args CODECOV_HANDLE_NO_REPORTS_FOUND) )
 codecov_du_args+=( $(write_existing_args CODECOV_JOB_CODE) )
@@ -57,5 +61,6 @@ codecov_du_args+=( $(write_existing_args CODECOV_PR) )
 codecov_du_args+=( $(write_existing_args CODECOV_REPORT_TYPE) )
 codecov_du_args+=( $(write_existing_args CODECOV_SHA) )
 codecov_du_args+=( $(write_existing_args CODECOV_SLUG) )
+codecov_du_args+=( $(write_existing_args CODECOV_SWIFT_PROJECT) )
 
 IFS=$OLDIFS
