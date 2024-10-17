@@ -24,7 +24,7 @@ def package_scripts(source_dir, source_root, outfile):
         for var in sorted_vars:
             f.write(f'{var}\n')
 
-    print(f"Current script is {len(''.join(lines))} chars.")
+    print(f"Current script is {len(''.join(lines))} (max: 8192) chars.")
     if len(''.join(lines)) > 8192:
         print("Due to windows limitiations, script must be under 8192 chars.")
         exit(1)
