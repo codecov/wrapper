@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.17"
+CC_WRAPPER_VERSION="0.0.18"
 say() {
   echo -e "$1"
 }
