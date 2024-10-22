@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+CODECOV_OS="linux"
+
 if [ -n "$CODECOV_BINARY" ];
 then
   if [ -f "$CODECOV_BINARY" ];
@@ -9,17 +11,23 @@ then
     exit_if_error "Could not find binary file $CODECOV_BINARY"
   fi
 else
-  family=$(uname -s | tr '[:upper:]' '[:lower:]')
-  codecov_os="windows"
-  [[ $family == "darwin" ]] && codecov_os="macos"
+  if [ -n "$CODECOV_OS" ];
+  then
+    say "$g==>$x Overridden OS: $b${CODECOV_OS}$x"
+    export codecov_os=${CODECOV_OS}
+  else
+    family=$(uname -s | tr '[:upper:]' '[:lower:]')
+    codecov_os="windows"
+    [[ $family == "darwin" ]] && codecov_os="macos"
 
-  [[ $family == "linux" ]] && codecov_os="linux"
-  [[ $codecov_os == "linux" ]] && \
-    osID=$(grep -e "^ID=" /etc/os-release | cut -c4-)
-  [[ $osID == "alpine" ]] && codecov_os="alpine"
-  [[ $(arch) == "aarch64" && $family == "linux" ]] && codecov_os+="-arm64"
-  say "$g==>$x Detected $b${codecov_os}$x"
-  export codecov_os=${codecov_os}
+    [[ $family == "linux" ]] && codecov_os="linux"
+    [[ $codecov_os == "linux" ]] && \
+      osID=$(grep -e "^ID=" /etc/os-release | cut -c4-)
+    [[ $osID == "alpine" ]] && codecov_os="alpine"
+    [[ $(arch) == "aarch64" && $family == "linux" ]] && codecov_os+="-arm64"
+    say "$g==>$x Detected $b${codecov_os}$x"
+    export codecov_os=${codecov_os}
+  fi
   export codecov_version=${CODECOV_VERSION}
 
   codecov_filename="codecov"
