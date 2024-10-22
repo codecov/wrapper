@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-CODECOV_OS="linux"
-
 if [ -n "$CODECOV_BINARY" ];
 then
   if [ -f "$CODECOV_BINARY" ];
@@ -16,6 +14,7 @@ else
     say "$g==>$x Overridden OS: $b${CODECOV_OS}$x"
     export codecov_os=${CODECOV_OS}
   else
+    CODECOV_OS="linux"
     family=$(uname -s | tr '[:upper:]' '[:lower:]')
     codecov_os="windows"
     [[ $family == "darwin" ]] && codecov_os="macos"
