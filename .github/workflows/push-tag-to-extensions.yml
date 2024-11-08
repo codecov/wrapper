@@ -15,7 +15,7 @@ jobs:
       - name: Run version
         run: ./scripts/version.sh
       - name: Push tag
-        uses: ./.github/workflows/push-tag.yml@main
+        uses: ./.github/workflows/push-tag.yml
         with:
           repository: "codecov/codecov-bitrise"
           version: ${{ env.CODECOV_WRAPPER_VERSION }}
