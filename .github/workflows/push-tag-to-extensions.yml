@@ -1,0 +1,19 @@
+---
+name: Push new tagged version
+on:
+  workflow_dispatch:
+  push:
+    # Pattern matched against refs/tags
+    tags:
+      - '*'
+jobs:
+  bitrise-step:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run version
+        run: ./scripts/version.sh
+      - name: Checkout
+        uses: ./.github/workflows/push-tag.yml@main
+        with:
+          repository: "codecov/codecov-bitrise"
+          version: ${{ env.CODECOV_WRAPPER_VERSION }}

@@ -1,0 +1,53 @@
+---
+name: Push tag to extension
+on:
+  workflow_call:
+    inputs:
+      repository:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repository }}
+
+      - name: Import GPG key
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.RELEASER_GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_config_global: true
+
+      - name: Create release branch
+        run: git checkout -b release/wrapper/${{ inputs.version }}
+
+      - name: Pull latest wrapper
+        run: |
+          git submodule update --init --recursive --remote
+
+      - name: Make commit
+        run: |
+          git commit -S --message "chore(release): wrapper-${{ inputs.version }}"
+          git push origin release/wrapper/${{ inputs.version }}
+
+      - name: Install GitHub CLI
+        uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
+
+      - name: Create pull request into main
+        run: |
+          gh pr create --title "chore(release): wrapper-${{ inputs.version}}" --body "---" --base "main"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
