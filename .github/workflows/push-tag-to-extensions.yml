@@ -10,9 +10,11 @@ jobs:
   bitrise-step:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Run version
         run: ./scripts/version.sh
-      - name: Checkout
+      - name: Push tag
         uses: ./.github/workflows/push-tag.yml@main
         with:
           repository: "codecov/codecov-bitrise"
