@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+set +u
 say() {
   echo -e "$1"
 }
