@@ -1,6 +1,6 @@
 ---
 name: Push new tagged version
-on:
+on:  # yamllint disable-line rule:truthy
   workflow_dispatch:
   push:
     # Pattern matched against refs/tags
