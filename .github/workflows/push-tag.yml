@@ -18,6 +18,10 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Echo inputs
+        run: |
+          echo "repository: ${{ inputs.repository }}"
+          echo "version: ${{ inputs.version }}"
       - name: Checkout
         uses: actions/checkout@v4
         with:
