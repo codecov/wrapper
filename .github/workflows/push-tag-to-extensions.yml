@@ -6,6 +6,7 @@ on:  # yamllint disable-line rule:truthy
     # Pattern matched against refs/tags
     tags:
       - '*'
+
 jobs:
   set-version:
     runs-on: ubuntu-latest
