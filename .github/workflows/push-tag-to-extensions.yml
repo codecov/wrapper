@@ -7,13 +7,17 @@ on:  # yamllint disable-line rule:truthy
     tags:
       - '*'
 jobs:
-  bitrise-step:
+  set-version:
     runs-on: ubuntu-latest
     steps:
-      - name: Run version
-        run: ./scripts/version.sh
-      - name: Checkout
-        uses: ./.github/workflows/push-tag.yml@main
-        with:
-          repository: "codecov/codecov-bitrise"
-          version: ${{ env.CODECOV_WRAPPER_VERSION }}
+      - name: Set version variable
+        run: |
+          version=$(cat scripts/version.sh | grep 'CODECOV_WRAPPER_VERSION=' | cut -d\" -f2)
+          echo "CODECOV_WRAPPER_VERSION=$version" >> $GITHUB_ENV
+
+  bitrise-step:
+    needs: set-version
+    uses: ././github/workflows/push-tag.yml
+    with:
+      repository: "codecov/codecov-bitrise"
+      version: ${{ env.CODECOV_WRAPPER_VERSION }}
