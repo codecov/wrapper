@@ -45,6 +45,7 @@ jobs:
 
       - name: Make commit
         run: |
+          git add src/scripts
           git commit -S --message "chore(release): wrapper-${{ inputs.version }}"
           git push origin release/wrapper/${{ inputs.version }}
 

@@ -22,9 +22,6 @@ jobs:
           version=$(cat scripts/version.sh | grep 'CODECOV_WRAPPER_VERSION=' | cut -d\" -f2)
           echo $version
           echo "CODECOV_WRAPPER_VERSION=$version" >> $GITHUB_OUTPUT
-      - name: Echo wrapper version
-        run: |
-          echo ${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}
 
   bitrise-step:
     needs: set-version
