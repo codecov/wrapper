@@ -12,6 +12,8 @@ jobs:
   set-version:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Set version variable
         run: |
           version=$(cat scripts/version.sh | grep 'CODECOV_WRAPPER_VERSION=' | cut -d\" -f2)
