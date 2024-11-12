@@ -11,10 +11,13 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   set-version:
     runs-on: ubuntu-latest
+    outputs:
+      CODECOV_WRAPPER_VERSION: ${{ steps.version_output.outputs.CODECOV_WRAPPER_VERSION }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set version variable
+        id: version_output
         run: |
           version=$(cat scripts/version.sh | grep 'CODECOV_WRAPPER_VERSION=' | cut -d\" -f2)
           echo $version
