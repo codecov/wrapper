@@ -17,15 +17,25 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
     steps:
       - name: Echo inputs
         run: |
           echo "repository: ${{ inputs.repository }}"
           echo "version: ${{ inputs.version }}"
+
+      - name: Generate a token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASER_APP_ID }}
+          private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           repository: ${{ inputs.repository }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Import GPG key
         id: import-gpg
