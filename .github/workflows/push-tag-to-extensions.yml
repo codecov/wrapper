@@ -27,6 +27,6 @@ jobs:
     needs: set-version
     uses: ./.github/workflows/push-tag.yml
     with:
-      repository: "codecov/codecov-bitrise"
+      repository: "codecov-bitrise"
       version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
     secrets: inherit

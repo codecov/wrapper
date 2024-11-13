@@ -30,11 +30,12 @@ jobs:
         with:
           app-id: ${{ secrets.RELEASER_APP_ID }}
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
+          repositories: ${{ inputs.repository }}
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: ${{ inputs.repository }}
+          repository: codecov/${{ inputs.repository }}
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Import GPG key
