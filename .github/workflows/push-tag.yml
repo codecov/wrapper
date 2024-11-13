@@ -58,7 +58,7 @@ jobs:
         run: |
           git add src/scripts
           git commit -S --message "chore(release): wrapper-${{ inputs.version }}"
-          git push origin release/wrapper/${{ inputs.version }}
+          git push origin release/wrapper/${{ inputs.version }} -f
 
       - name: Install GitHub CLI
         uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
