@@ -65,7 +65,7 @@ jobs:
 
       - name: Create pull request into main
         run: |
-          gh auth login --with-token < echo ${{ env.ACCESS_TOKEN }}
+          gh auth login --with-token < ${{ env.ACCESS_TOKEN }}
           gh pr create --title "chore(release): wrapper-${{ inputs.version}}" --body "---" --base "main"
         env:
           ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
