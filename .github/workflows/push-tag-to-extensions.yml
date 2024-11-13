@@ -6,14 +6,42 @@ on:  # yamllint disable-line rule:truthy
     # Pattern matched against refs/tags
     tags:
       - '*'
+
 jobs:
-  bitrise-step:
+  set-version:
     runs-on: ubuntu-latest
+    outputs:
+      CODECOV_WRAPPER_VERSION: ${{ steps.version_output.outputs.CODECOV_WRAPPER_VERSION }}
     steps:
-      - name: Run version
-        run: ./scripts/version.sh
       - name: Checkout
-        uses: ./.github/workflows/push-tag.yml@main
-        with:
-          repository: "codecov/codecov-bitrise"
-          version: ${{ env.CODECOV_WRAPPER_VERSION }}
+        uses: actions/checkout@v4
+      - name: Set version variable
+        id: version_output
+        run: |
+          version=$(cat scripts/version.sh | grep 'CODECOV_WRAPPER_VERSION=' | cut -d\" -f2)
+          echo $version
+          echo "CODECOV_WRAPPER_VERSION=$version" >> $GITHUB_OUTPUT
+
+  bitrise-step:
+    needs: set-version
+    uses: ./.github/workflows/push-tag.yml
+    with:
+      repository: "codecov-bitrise"
+      version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
+    secrets: inherit
+
+  circleci-orb:
+    needs: set-version
+    uses: ./.github/workflows/push-tag.yml
+    with:
+      repository: "codecov-circleci-orb"
+      version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
+    secrets: inherit
+
+  github-action:
+    needs: set-version
+    uses: ./.github/workflows/push-tag.yml
+    with:
+      repository: "codecov-action"
+      version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
+    secrets: inherit

@@ -1,4 +1,4 @@
----
+
 # yamllint disable rule:line-length
 name: Push tag to extension
 on:  # yamllint disable-line rule:truthy
@@ -17,11 +17,27 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
+
     steps:
+      - name: Echo inputs
+        run: |
+          echo "repository: ${{ inputs.repository }}"
+          echo "version: ${{ inputs.version }}"
+
+      - name: Generate a token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASER_APP_ID }}
+          private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
+          repositories: ${{ inputs.repository }}
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: ${{ inputs.repository }}
+          repository: codecov/${{ inputs.repository }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Import GPG key
         id: import-gpg
@@ -36,19 +52,19 @@ jobs:
         run: git checkout -b release/wrapper/${{ inputs.version }}
 
       - name: Pull latest wrapper
-        run: |
-          git submodule update --init --recursive --remote
+        run: git submodule update --init --recursive --remote
 
       - name: Make commit
         run: |
+          git add src/scripts
           git commit -S --message "chore(release): wrapper-${{ inputs.version }}"
-          git push origin release/wrapper/${{ inputs.version }}
+          git push origin release/wrapper/${{ inputs.version }} -f
 
       - name: Install GitHub CLI
         uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
 
       - name: Create pull request into main
         run: |
-          gh pr create --title "chore(release): wrapper-${{ inputs.version}}" --body "---" --base "main"
+          gh pr create --fill --base "main" --reviewer "codecov/report-upload"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
