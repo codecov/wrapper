@@ -52,8 +52,7 @@ jobs:
         run: git checkout -b release/wrapper/${{ inputs.version }}
 
       - name: Pull latest wrapper
-        run: |
-          git submodule update --init --recursive --remote
+        run: git submodule update --init --recursive --remote
 
       - name: Make commit
         run: |
