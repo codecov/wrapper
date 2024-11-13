@@ -18,6 +18,7 @@ jobs:
       contents: write
       pull-requests: write
       id-token: write
+
     steps:
       - name: Echo inputs
         run: |
@@ -65,6 +66,7 @@ jobs:
 
       - name: Create pull request into main
         run: |
+          gh auth login --with-token < echo ${{ env.ACCESS_TOKEN }}
           gh pr create --title "chore(release): wrapper-${{ inputs.version}}" --body "---" --base "main"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
