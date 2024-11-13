@@ -70,4 +70,4 @@ jobs:
           head: release/wrapper/${{ inputs.version }}
           base: main
           title: "chore(release) wrapper-${{ inputs.version }}"
-          body: ---
+          body: "---"
