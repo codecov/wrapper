@@ -30,3 +30,19 @@ jobs:
       repository: "codecov-bitrise"
       version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
     secrets: inherit
+
+  circleci-orb:
+    needs: set-version
+    uses: ./.github/workflows/push-tag.yml
+    with:
+      repository: "codecov-circleci-orb"
+      version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
+    secrets: inherit
+
+  github-action:
+    needs: set-version
+    uses: ./.github/workflows/push-tag.yml
+    with:
+      repository: "codecov-action"
+      version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
+    secrets: inherit

@@ -1,4 +1,4 @@
----
+
 # yamllint disable rule:line-length
 name: Push tag to extension
 on:  # yamllint disable-line rule:truthy
@@ -65,6 +65,6 @@ jobs:
 
       - name: Create pull request into main
         run: |
-          gh pr create --title "chore(release): wrapper-${{ inputs.version }}" --body "---" --base "main"
+          gh pr create --fill --base "main" --assignee "thomasrockhu-codecov"
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
