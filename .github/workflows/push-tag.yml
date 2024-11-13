@@ -64,10 +64,7 @@ jobs:
         uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
 
       - name: Create pull request into main
-        uses: thomaseizinger/create-pull-request@1.3.1
-        with:
-          github_token: ${{ steps.app-token.outputs.token }}
-          head: release/wrapper/${{ inputs.version }}
-          base: main
-          title: "chore(release) wrapper-${{ inputs.version }}"
-          body: "---"
+        run: |
+          gh pr create --title "chore(release): wrapper-${{ inputs.version }}" --body "---" --base "main"
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
