@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length
 name: Push new tagged version
 on:  # yamllint disable-line rule:truthy
   workflow_dispatch:
