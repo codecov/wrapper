@@ -2,6 +2,8 @@
 
 codecov_du_args=()
 
+codecov_du_args+=( $(write_existing_args CODECOV_ENV) )
+
 OLDIFS=$IFS;IFS=,
 
 codecov_du_args+=( $(write_existing_args CODECOV_BRANCH) )
@@ -12,7 +14,6 @@ codecov_du_args+=( $(write_existing_args CODECOV_DIR) )
 codecov_du_args+=( $(write_truthy_args CODECOV_DISABLE_FILE_FIXES) )
 codecov_du_args+=( $(write_truthy_args CODECOV_DISABLE_SEARCH) )
 codecov_du_args+=( $(write_truthy_args CODECOV_DRY_RUN) )
-codecov_du_args+=( $(write_existing_args CODECOV_ENV) )
 
 if [ -n "$CODECOV_EXCLUDES" ];
 then
