@@ -119,73 +119,71 @@ cc_cli_args+=( $(write_existing_args CC_AUTO_LOAD_PARAMS_FROM) )
 cc_cli_args+=( $(write_existing_args CC_ENTERPRISE_URL) )
 cc_cli_args+=( $(write_existing_args CC_YML_PATH) )
 cc_cli_args+=( $(write_truthy_args CC_VERBOSE) )
-cc_cc_args=()
-cc_cc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
-cc_cc_args+=( $(write_existing_args CC_GIT_SERVICE) )
-cc_cc_args+=( $(write_existing_args CC_PARENT_SHA) )
-cc_cc_args+=( $(write_existing_args CC_PR) )
-cc_cc_args+=( $(write_existing_args CC_SHA) )
-cc_cc_args+=( $(write_existing_args CC_SLUG) )
-cc_create_report_args=()
-cc_cr_args+=( $(write_existing_args CC_CODE) )
-cc_cr_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
-cc_cr_args+=( $(write_existing_args CC_GIT_SERVICE) )
-cc_cr_args+=( $(write_existing_args CC_PR) )
-cc_cr_args+=( $(write_existing_args CC_SHA) )
-cc_cr_args+=( $(write_existing_args CC_SLUG) )
-cc_du_args=()
-cc_du_args+=( $(write_existing_args CC_ENV) )
+cc_uc_args=()
+cc_uc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
+cc_uc_args+=( $(write_existing_args CC_GIT_SERVICE) )
+cc_uc_args+=( $(write_existing_args CC_PARENT_SHA) )
+cc_uc_args+=( $(write_existing_args CC_PR) )
+cc_uc_args+=( $(write_existing_args CC_SHA) )
+cc_uc_args+=( $(write_existing_args CC_SLUG) )
+cc_uc_args+=( $(write_existing_args CC_CODE) )
+cc_uc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
+cc_uc_args+=( $(write_existing_args CC_GIT_SERVICE) )
+cc_uc_args+=( $(write_existing_args CC_PR) )
+cc_uc_args+=( $(write_existing_args CC_SHA) )
+cc_uc_args+=( $(write_existing_args CC_SLUG) )
+cc_uc_args+=( $(write_existing_args CC_ENV) )
 OLDIFS=$IFS;IFS=,
-cc_du_args+=( $(write_existing_args CC_BRANCH) )
-cc_du_args+=( $(write_existing_args CC_BUILD) )
-cc_du_args+=( $(write_existing_args CC_BUILD_URL) )
-cc_du_args+=( $(write_existing_args CC_CODE) )
-cc_du_args+=( $(write_existing_args CC_DIR) )
-cc_du_args+=( $(write_truthy_args CC_DISABLE_FILE_FIXES) )
-cc_du_args+=( $(write_truthy_args CC_DISABLE_SEARCH) )
-cc_du_args+=( $(write_truthy_args CC_DRY_RUN) )
+cc_uc_args+=( $(write_existing_args CC_BRANCH) )
+cc_uc_args+=( $(write_existing_args CC_BUILD) )
+cc_uc_args+=( $(write_existing_args CC_BUILD_URL) )
+cc_uc_args+=( $(write_existing_args CC_CODE) )
+cc_uc_args+=( $(write_existing_args CC_DIR) )
+cc_uc_args+=( $(write_truthy_args CC_DISABLE_FILE_FIXES) )
+cc_uc_args+=( $(write_truthy_args CC_DISABLE_SEARCH) )
+cc_uc_args+=( $(write_truthy_args CC_DRY_RUN) )
 if [ -n "$CC_EXCLUDES" ];
 then
   for directory in $CC_EXCLUDES; do
-    cc_du_args+=( " --exclude " "$directory" )
+    cc_uc_args+=( " --exclude " "$directory" )
   done
 fi
-cc_du_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
+cc_uc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
 if [ -n "$CC_FILES" ];
 then
   for file in $CC_FILES; do
-    cc_du_args+=( " --file " "$file" )
+    cc_uc_args+=( " --file " "$file" )
   done
 fi
 if [ -n "$CC_FLAGS" ];
 then
   for flag in $CC_FLAGS; do
-    cc_du_args+=( " --flag " "$flag" )
+    cc_uc_args+=( " --flag " "$flag" )
   done
 fi
-cc_du_args+=( $(write_existing_args CC_GCOV_ARGS) )
-cc_du_args+=( $(write_existing_args CC_GCOV_EXECUTABLE) )
-cc_du_args+=( $(write_existing_args CC_GCOV_IGNORE) )
-cc_du_args+=( $(write_existing_args CC_GCOV_INCLUDE) )
-cc_du_args+=( $(write_existing_args CC_GIT_SERVICE) )
-cc_du_args+=( $(write_truthy_args CC_HANDLE_NO_REPORTS_FOUND) )
-cc_du_args+=( $(write_existing_args CC_JOB_CODE) )
-cc_du_args+=( $(write_truthy_args CC_LEGACY) )
-cc_du_args+=( $(write_existing_args CC_NAME) )
-cc_du_args+=( $(write_existing_args CC_NETWORK_FILTER) )
-cc_du_args+=( $(write_existing_args CC_NETWORK_PREFIX) )
-cc_du_args+=( $(write_existing_args CC_NETWORK_ROOT_FOLDER) )
+cc_uc_args+=( $(write_existing_args CC_GCOV_ARGS) )
+cc_uc_args+=( $(write_existing_args CC_GCOV_EXECUTABLE) )
+cc_uc_args+=( $(write_existing_args CC_GCOV_IGNORE) )
+cc_uc_args+=( $(write_existing_args CC_GCOV_INCLUDE) )
+cc_uc_args+=( $(write_existing_args CC_GIT_SERVICE) )
+cc_uc_args+=( $(write_truthy_args CC_HANDLE_NO_REPORTS_FOUND) )
+cc_uc_args+=( $(write_existing_args CC_JOB_CODE) )
+cc_uc_args+=( $(write_truthy_args CC_LEGACY) )
+cc_uc_args+=( $(write_existing_args CC_NAME) )
+cc_uc_args+=( $(write_existing_args CC_NETWORK_FILTER) )
+cc_uc_args+=( $(write_existing_args CC_NETWORK_PREFIX) )
+cc_uc_args+=( $(write_existing_args CC_NETWORK_ROOT_FOLDER) )
 if [ -n "$CC_PLUGINS" ];
 then
   for plugin in $CC_PLUGINS; do
-    cc_du_args+=( " --plugin " "$plugin" )
+    cc_uc_args+=( " --plugin " "$plugin" )
   done
 fi
-cc_du_args+=( $(write_existing_args CC_PR) )
-cc_du_args+=( $(write_existing_args CC_REPORT_TYPE) )
-cc_du_args+=( $(write_existing_args CC_SHA) )
-cc_du_args+=( $(write_existing_args CC_SLUG) )
-cc_du_args+=( $(write_existing_args CC_SWIFT_PROJECT) )
+cc_uc_args+=( $(write_existing_args CC_PR) )
+cc_uc_args+=( $(write_existing_args CC_REPORT_TYPE) )
+cc_uc_args+=( $(write_existing_args CC_SHA) )
+cc_uc_args+=( $(write_existing_args CC_SLUG) )
+cc_uc_args+=( $(write_existing_args CC_SWIFT_PROJECT) )
 IFS=$OLDIFS
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
@@ -204,35 +202,13 @@ then
   token_str+=" -t <redacted>"
   token_arg+=( " -t " "$token")
 fi
-say "$g==>$x Running create-commit"
-say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") create-commit$token_str $(echo "${cc_cc_args[@]}")$x"
+say "$g==>$x Running upload-coverage"
+say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") upload-coverage$token_str $(echo "${cc_uc_args[@]}")$x"
 if ! ./$cc_filename \
   ${cc_cli_args[*]} \
-  create-commit \
+  upload-coverage \
   ${token_arg[*]} \
-  ${cc_cc_args[*]};
+  ${cc_uc_args[*]};
 then
-  exit_if_error "Failed to create-commit"
-fi
-say " "
-say "$g==>$x Running create-report"
-say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") create-report$token_str $(echo "${cc_cr_args[@]}")$x"
-if ! ./$cc_filename \
-  ${cc_cli_args[*]} \
-  create-report \
-  ${token_arg[*]} \
-  ${cc_cr_args[*]};
-then
-  exit_if_error "Failed to create-report"
-fi
-say " "
-say "$g==>$x Running do-upload"
-say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") do-upload$token_str $(echo "${cc_du_args[@]}")$x"
-if ! ./$cc_filename \
-  ${cc_cli_args[*]} \
-  do-upload \
-  ${token_arg[*]} \
-  ${cc_du_args[*]};
-then
-  exit_if_error "Failed to upload"
+  exit_if_error "Failed to upload coverage"
 fi
