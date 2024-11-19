@@ -41,6 +41,10 @@ say "     _____          _
                                   "
 CC_VERSION="${CC_VERSION:-latest}"
 CC_FAIL_ON_ERROR="${CC_FAIL_ON_ERROR:-false}"
+CC_USE_PYTHON="${CC_USE_PYTHON:-false}"
+if [ -n "$CC_USE_PYTHON" ]; then
+  echo "CC_USE_PYTHON is set, skipping download and validation steps."
+else
 if [ -n "$CC_BINARY" ];
 then
   if [ -f "$CC_BINARY" ];
@@ -113,6 +117,7 @@ CC_PUBLIC_PGP_KEY=$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)
   fi
   say "$g==>$x CLI integrity verified"
   say
+fi
 fi
 cc_cli_args=()
 cc_cli_args+=( $(write_existing_args CC_AUTO_LOAD_PARAMS_FROM) )
@@ -189,7 +194,13 @@ cc_du_args+=( $(write_existing_args CC_SWIFT_PROJECT) )
 IFS=$OLDIFS
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
-chmod +x $cc_filename
+if [ -z "$CC_USE_PYTHON" ]; 
+then
+  chmod +x $cc_filename
+  bin="./$cc_filename"
+else
+  bin="codecov-cli"
+fi
 if [ -n "$CC_TOKEN_VAR" ];
 then
   token="$(eval echo \$$CC_TOKEN_VAR)"
@@ -205,8 +216,8 @@ then
   token_arg+=( " -t " "$token")
 fi
 say "$g==>$x Running create-commit"
-say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") create-commit$token_str $(echo "${cc_cc_args[@]}")$x"
-if ! ./$cc_filename \
+say "      $b$bin $(echo "${cc_cli_args[@]}") create-commit$token_str $(echo "${cc_cc_args[@]}")$x"
+if ! $bin \
   ${cc_cli_args[*]} \
   create-commit \
   ${token_arg[*]} \
@@ -216,8 +227,8 @@ then
 fi
 say " "
 say "$g==>$x Running create-report"
-say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") create-report$token_str $(echo "${cc_cr_args[@]}")$x"
-if ! ./$cc_filename \
+say "      $b$bin $(echo "${cc_cli_args[@]}") create-report$token_str $(echo "${cc_cr_args[@]}")$x"
+if ! $bin \
   ${cc_cli_args[*]} \
   create-report \
   ${token_arg[*]} \
@@ -227,8 +238,8 @@ then
 fi
 say " "
 say "$g==>$x Running do-upload"
-say "      $b./$cc_filename $(echo "${cc_cli_args[@]}") do-upload$token_str $(echo "${cc_du_args[@]}")$x"
-if ! ./$cc_filename \
+say "      $b$bin $(echo "${cc_cli_args[@]}") do-upload$token_str $(echo "${cc_du_args[@]}")$x"
+if ! $bin \
   ${cc_cli_args[*]} \
   do-upload \
   ${token_arg[*]} \
