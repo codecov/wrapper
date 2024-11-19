@@ -3,7 +3,13 @@
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
 
-chmod +x $codecov_filename
+if [ -z "$CC_USE_PYTHON" ]; 
+then
+  chmod +x $codecov_filename
+  bin="./$codecov_filename"
+else
+  bin="codecov-cli"
+fi
 
 if [ -n "$CODECOV_TOKEN_VAR" ];
 then
@@ -22,8 +28,8 @@ then
 fi
 
 say "$g==>$x Running create-commit"
-say "      $b./$codecov_filename $(echo "${codecov_cli_args[@]}") create-commit$token_str $(echo "${codecov_cc_args[@]}")$x"
-if ! ./$codecov_filename \
+say "      $b$bin $(echo "${codecov_cli_args[@]}") create-commit$token_str $(echo "${codecov_cc_args[@]}")$x"
+if ! $bin \
   ${codecov_cli_args[*]} \
   create-commit \
   ${token_arg[*]} \
@@ -34,8 +40,8 @@ fi
 say " "
 
 say "$g==>$x Running create-report"
-say "      $b./$codecov_filename $(echo "${codecov_cli_args[@]}") create-report$token_str $(echo "${codecov_cr_args[@]}")$x"
-if ! ./$codecov_filename \
+say "      $b$bin $(echo "${codecov_cli_args[@]}") create-report$token_str $(echo "${codecov_cr_args[@]}")$x"
+if ! $bin \
   ${codecov_cli_args[*]} \
   create-report \
   ${token_arg[*]} \
@@ -46,8 +52,8 @@ fi
 say " "
 
 say "$g==>$x Running do-upload"
-say "      $b./$codecov_filename $(echo "${codecov_cli_args[@]}") do-upload$token_str $(echo "${codecov_du_args[@]}")$x"
-if ! ./$codecov_filename \
+say "      $b$bin $(echo "${codecov_cli_args[@]}") do-upload$token_str $(echo "${codecov_du_args[@]}")$x"
+if ! $bin \
   ${codecov_cli_args[*]} \
   do-upload \
   ${token_arg[*]} \
