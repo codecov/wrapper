@@ -46,7 +46,10 @@ codecov_du_args+=( $(write_existing_args CODECOV_GIT_SERVICE) )
 codecov_du_args+=( $(write_truthy_args CODECOV_HANDLE_NO_REPORTS_FOUND) )
 codecov_du_args+=( $(write_existing_args CODECOV_JOB_CODE) )
 codecov_du_args+=( $(write_truthy_args CODECOV_LEGACY) )
-codecov_du_args+=( $(write_existing_args CODECOV_NAME) )
+if [ -n "$CODECOV_NAME" ];
+then
+  codecov_du_args+=( "--name" "$CODECOV_NAME" )
+fi
 codecov_du_args+=( $(write_existing_args CODECOV_NETWORK_FILTER) )
 codecov_du_args+=( $(write_existing_args CODECOV_NETWORK_PREFIX) )
 codecov_du_args+=( $(write_existing_args CODECOV_NETWORK_ROOT_FOLDER) )

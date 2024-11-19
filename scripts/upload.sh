@@ -51,7 +51,7 @@ if ! ./$codecov_filename \
   ${codecov_cli_args[*]} \
   do-upload \
   ${token_arg[*]} \
-  ${codecov_du_args[*]};
+  "${codecov_du_args[@]}";
 then
   exit_if_error "Failed to upload"
 fi
