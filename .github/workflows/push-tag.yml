@@ -65,6 +65,6 @@ jobs:
 
       - name: Create pull request into main
         run: |
-          gh pr create --fill --base "main" --reviewer "@codecov/report-upload"
+          gh pr create --fill --base "main"
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
