@@ -27,7 +27,7 @@ if ! ./$codecov_filename \
   ${codecov_cli_args[*]} \
   upload-coverage \
   ${token_arg[*]} \
-  ${codecov_uc_args[*]};
+  "${codecov_uc_args[@]}";
 then
   exit_if_error "Failed to upload coverage"
 fi

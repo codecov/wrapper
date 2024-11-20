@@ -209,7 +209,7 @@ if ! ./$cc_filename \
   ${cc_cli_args[*]} \
   upload-coverage \
   ${token_arg[*]} \
-  ${cc_uc_args[*]};
+  "${cc_uc_args[@]}";
 then
   exit_if_error "Failed to upload coverage"
 fi
