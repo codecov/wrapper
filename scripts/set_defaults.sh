@@ -18,17 +18,24 @@ lower() {
   echo $(echo $1 | sed 's/CODECOV//' | sed 's/_/-/g' | tr '[:upper:]' '[:lower:]')
 }
 
-write_existing_args() {
-  if [ -n "$(eval echo \$$1)" ];
+k_arg() {
+  if [ -n "$(eval echo \$"CODECOV_$1")" ];
   then
-    echo " -$(lower "$1") $(eval echo \$$1)"
+    echo "--$(lower "$1")"
+  fi
+}
+
+v_arg() {
+  if [ -n "$(eval echo \$"CODECOV_$1")" ];
+  then
+    echo "$(eval echo \$"CODECOV_$1")"
   fi
 }
 
 write_truthy_args() {
   if [ "$(eval echo \$$1)" = "true" ] || [ "$(eval echo \$$1)" = "1" ];
   then
-    echo " -$(lower $1)"
+    echo "-$(lower $1)"
   fi
 }
 

@@ -27,7 +27,7 @@ if ! ./$codecov_filename \
   ${codecov_cli_args[*]} \
   create-commit \
   ${token_arg[*]} \
-  ${codecov_cc_args[*]};
+  "${codecov_cc_args[@]}";
 then
   exit_if_error "Failed to create-commit"
 fi
@@ -39,7 +39,7 @@ if ! ./$codecov_filename \
   ${codecov_cli_args[*]} \
   create-report \
   ${token_arg[*]} \
-  ${codecov_cr_args[*]};
+  "${codecov_cr_args[@]}";
 then
   exit_if_error "Failed to create-report"
 fi

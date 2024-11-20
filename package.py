@@ -13,7 +13,7 @@ def package_scripts(source_dir, source_root, outfile):
     with open(outfile, 'w') as f:
         f.write(BASH_LINE)
         for line in lines:
-            cc_vars.update(_get_vars(line))
+            cc_vars.add(_get_vars(line))
             f.write(line)
 
     st = os.stat(outfile)
@@ -30,9 +30,17 @@ def package_scripts(source_dir, source_root, outfile):
         exit(1)
 
 def _get_vars(line):
-    matcher = r'(CC_[^\r\n\t\f\v=]+)*'
-    matcher = r'(CC_[\w_]+)*'
-    return re.findall(matcher, line)
+    matcher = r'(CC_[\w_]+)'
+    matches = re.search(matcher, line)
+    if matches and matches.groups():
+        return matches.groups()[0]
+
+    matcher = r'v_arg ([\w_]+)'
+    matches = re.search(matcher, line)
+    if matches and matches.groups():
+        return f"CC_{matches.groups()[0]}"
+
+    return ''
 
 def _parse(file):
     lines = []
