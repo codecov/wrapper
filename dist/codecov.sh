@@ -123,7 +123,11 @@ fi
 cc_cli_args=()
 cc_cli_args+=( $(k_arg AUTO_LOAD_PARAMS_FROM) $(v_arg AUTO_LOAD_PARAMS_FROM))
 cc_cli_args+=( $(k_arg ENTERPRISE_URL) $(v_arg ENTERPRISE_URL))
-cc_cli_args+=( $(k_arg YML_PATH) $(v_arg YML_PATH))
+if [ -n $CC_YML_PATH ]
+then
+  cc_cli_args+=( "--codecov-yml-path" )
+  cc_cli_args+=( "$CC_YML_PATH" )
+fi
 cc_cli_args+=( $(write_truthy_args CC_VERBOSE) )
 cc_cc_args=()
 cc_cc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
