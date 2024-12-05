@@ -33,17 +33,17 @@ else
   [[ $codecov_os == "windows" ]] && codecov_filename+=".exe"
   export codecov_filename=${codecov_filename}
   [[ $codecov_os == "macos" ]]  && \
-    ! command -v gpg 2>&1 >/dev/null && \
+    ! command -v gpg 2>&1 && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
   codecov_url="https://cli.codecov.io"
   codecov_url="$codecov_url/${CODECOV_VERSION}"
   codecov_url="$codecov_url/${codecov_os}/${codecov_filename}"
   say "$g ->$x Downloading $b${codecov_url}$x"
-  curl -Os $codecov_url
+  curl -Os "$codecov_url"
   say "$g==>$x Finishing downloading $b${codecov_os}:${CODECOV_VERSION}$x"
 
   version_url="https://cli.codecov.io/${codecov_os}/${CODECOV_VERSION}"
-  version=$(curl -s $version_url -H "Accept:application/json" | jq -r '.version')
+  version=$(curl -s "$version_url" -H "Accept:application/json" | jq -r '.version')
   say "      Version: $b$version$x"
   say " "
 fi

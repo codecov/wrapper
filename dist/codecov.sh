@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.28"
+CC_WRAPPER_VERSION="0.0.29"
 set +u
 say() {
   echo -e "$1"
 }
 exit_if_error() {
   say "$r==> $1$x"
-  if [ $CC_FAIL_ON_ERROR = true ];
+  if [ "$CC_FAIL_ON_ERROR" = true ];
   then
      say "$r    Exiting...$x"
      exit 1;
@@ -78,16 +78,16 @@ else
   [[ $cc_os == "windows" ]] && cc_filename+=".exe"
   export cc_filename=${cc_filename}
   [[ $cc_os == "macos" ]]  && \
-    ! command -v gpg 2>&1 >/dev/null && \
+    ! command -v gpg 2>&1 && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
   cc_url="https://cli.codecov.io"
   cc_url="$cc_url/${CC_VERSION}"
   cc_url="$cc_url/${cc_os}/${cc_filename}"
   say "$g ->$x Downloading $b${cc_url}$x"
-  curl -Os $cc_url
+  curl -Os "$cc_url"
   say "$g==>$x Finishing downloading $b${cc_os}:${CC_VERSION}$x"
   version_url="https://cli.codecov.io/${cc_os}/${CC_VERSION}"
-  version=$(curl -s $version_url -H "Accept:application/json" | jq -r '.version')
+  version=$(curl -s "$version_url" -H "Accept:application/json" | jq -r '.version')
   say "      Version: $b$version$x"
   say " "
 fi
@@ -123,7 +123,7 @@ fi
 cc_cli_args=()
 cc_cli_args+=( $(k_arg AUTO_LOAD_PARAMS_FROM) $(v_arg AUTO_LOAD_PARAMS_FROM))
 cc_cli_args+=( $(k_arg ENTERPRISE_URL) $(v_arg ENTERPRISE_URL))
-if [ -n $CC_YML_PATH ]
+if [ -n "$CC_YML_PATH" ]
 then
   cc_cli_args+=( "--codecov-yml-path" )
   cc_cli_args+=( "$CC_YML_PATH" )

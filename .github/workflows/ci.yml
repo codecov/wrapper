@@ -23,3 +23,14 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
           CODECOV_FLAGS: flag1,flag2
+  shellcheck:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: brew install shellcheck
+      - name: Run shellcheck
+        # TODO: fix shellcheck
+        # run: shellcheck dist/codecov.sh -x
+        run: shellcheck dist/codecov.sh
