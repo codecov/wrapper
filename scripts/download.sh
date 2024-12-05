@@ -42,7 +42,7 @@ else
   curl -Os "$codecov_url"
   say "$g==>$x Finishing downloading $b${codecov_os}:${CODECOV_VERSION}$x"
 
-  version_url="https://cli.codecov.io/${codecov_os}/${CODECOV_VERSION}"
+  version_url="https://cli.codecov.io/api/${codecov_os}/${CODECOV_VERSION}"
   version=$(curl -s "$version_url" -H "Accept:application/json" | jq -r '.version')
   say "      Version: $b$version$x"
   say " "
