@@ -7,7 +7,7 @@ say() {
 
 exit_if_error() {
   say "$r==> $1$x"
-  if [ $CODECOV_FAIL_ON_ERROR = true ];
+  if [ "$CODECOV_FAIL_ON_ERROR" = true ];
   then
      say "$r    Exiting...$x"
      exit 1;
