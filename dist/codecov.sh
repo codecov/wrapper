@@ -78,7 +78,7 @@ else
   [[ $cc_os == "windows" ]] && cc_filename+=".exe"
   export cc_filename=${cc_filename}
   [[ $cc_os == "macos" ]]  && \
-    ! command -v gpg 2>&1 && \
+    ! command -v gpg 2>&1 >/dev/null && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
   cc_url="https://cli.codecov.io"
   cc_url="$cc_url/${CC_VERSION}"
