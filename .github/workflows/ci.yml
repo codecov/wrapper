@@ -31,6 +31,4 @@ jobs:
       - name: Install shellcheck
         run: brew install shellcheck
       - name: Run shellcheck
-        # TODO: fix shellcheck
-        # run: shellcheck dist/codecov.sh -x
-        run: shellcheck dist/codecov.sh
+        run: shellcheck dist/codecov.sh --severity=error
