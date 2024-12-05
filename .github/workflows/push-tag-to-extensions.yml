@@ -6,7 +6,7 @@ on:  # yamllint disable-line rule:truthy
   push:
     # Pattern matched against refs/tags
     tags:
-      - '*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   set-version:
