@@ -10,7 +10,7 @@ else
   # One-time step
   say "$g==>$x Verifying GPG signature integrity"
   sha_url="https://cli.codecov.io"
-  sha_url="${sha_url}/${codecov_version}/${codecov_os}"
+  sha_url="${sha_url}/${CODECOV_VERSION}/${CODECOV_OS}"
   sha_url="${sha_url}/${codecov_filename}.SHA256SUM"
   say "$g ->$x Downloading $b${sha_url}$x"
   say "$g ->$x Downloading $b${sha_url}.sig$x"

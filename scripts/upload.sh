@@ -3,7 +3,7 @@
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
 
-chmod +x $codecov_filename
+chmod +x $codecov_command
 
 if [ -n "$CODECOV_TOKEN_VAR" ];
 then
@@ -22,8 +22,8 @@ then
 fi
 
 say "$g==>$x Running upload-coverage"
-say "      $b./$codecov_filename $(echo "${codecov_cli_args[@]}") upload-coverage$token_str $(echo "${codecov_uc_args[@]}")$x"
-if ! ./$codecov_filename \
+say "      $b$codecov_command $(echo "${codecov_cli_args[@]}") upload-coverage$token_str $(echo "${codecov_uc_args[@]}")$x"
+if ! $codecov_command \
   ${codecov_cli_args[*]} \
   upload-coverage \
   ${token_arg[*]} \
