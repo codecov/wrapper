@@ -72,8 +72,8 @@ else
     say "$g==>$x Detected $b${CC_OS}$x"
   fi
   cc_filename="codecov"
-  cc_command="./$cc_filename"
   [[ $CC_OS == "windows" ]] && cc_filename+=".exe"
+  cc_command="./$cc_filename"
   [[ $CC_OS == "macos" ]]  && \
     ! command -v gpg 2>&1 >/dev/null && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg

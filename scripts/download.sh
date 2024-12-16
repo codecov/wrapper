@@ -26,8 +26,8 @@ else
   fi
 
   codecov_filename="codecov"
-  codecov_command="./$codecov_filename"
   [[ $CODECOV_OS == "windows" ]] && codecov_filename+=".exe"
+  codecov_command="./$codecov_filename"
   [[ $CODECOV_OS == "macos" ]]  && \
     ! command -v gpg 2>&1 >/dev/null && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
