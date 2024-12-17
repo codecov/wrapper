@@ -65,6 +65,7 @@ jobs:
 
       - name: Create pull request into main
         run: |
-          gh pr create --fill --base "main"
+          ENV_CHANGES=$(git diff $(git tag --sort version:refname | tail -n 2 | head -n 1) $(git tag --sort version:refname | tail -n 1) env)
+          gh pr create --title "chore(release): wrapper -${{ inputs.version }}" --body "$ENV_CHANGES" --base "main"
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}

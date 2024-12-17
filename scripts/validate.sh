@@ -32,3 +32,14 @@ else
   say "$g==>$x CLI integrity verified"
   say
 fi
+
+if [ -n "$CODECOV_BINARY_LOCATION" ];
+then
+  mkdir -p "$CODECOV_BINARY_LOCATION" && mv "$codecov_filename" $_
+  say "$g==>$x Codecov binary moved to ${CODECOV_BINARY_LOCATION}"
+fi
+
+if [ "$CODECOV_DOWNLOAD_ONLY" = "true" ];
+then
+  say "$g==>$x Codecov download only called. Exiting..."
+fi
