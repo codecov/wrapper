@@ -134,6 +134,7 @@ then
   cc_cli_args+=( "--codecov-yml-path" )
   cc_cli_args+=( "$CC_YML_PATH" )
 fi
+cc_cli_args+=( $(write_truthy_args CC_DISABLE_TELEM) )
 cc_cli_args+=( $(write_truthy_args CC_VERBOSE) )
 cc_uc_args=()
 # Args for create commit
