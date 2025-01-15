@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.31"
+CC_WRAPPER_VERSION="0.0.32"
 set +u
 say() {
   echo -e "$1"
@@ -134,6 +134,7 @@ then
   cc_cli_args+=( "--codecov-yml-path" )
   cc_cli_args+=( "$CC_YML_PATH" )
 fi
+cc_cli_args+=( $(write_truthy_args CC_DISABLE_TELEM) )
 cc_cli_args+=( $(write_truthy_args CC_VERBOSE) )
 cc_uc_args=()
 # Args for create commit
