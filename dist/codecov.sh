@@ -84,7 +84,7 @@ else
   curl -Os "$cc_url"
   say "$g==>$x Finishing downloading $b${CC_OS}:${CC_VERSION}$x"
   version_url="https://cli.codecov.io/api/${CC_OS}/${CC_VERSION}"
-  version=$(curl -s "$version_url" -H "Accept:application/json" | jq -r '.version')
+  version=$(curl -s "$version_url" -H "Accept:application/json" | tr \{ '\n' | tr , '\n' | tr \} '\n' | grep "\"version\"" | awk  -F'"' '{print $4}' | tail -1)
   say "      Version: $b$version$x"
   say " "
 fi
