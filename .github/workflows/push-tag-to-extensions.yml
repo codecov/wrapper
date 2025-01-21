@@ -22,6 +22,8 @@ jobs:
           version=$(cat scripts/version.sh | grep 'CODECOV_WRAPPER_VERSION=' | cut -d\" -f2)
           echo $version
           echo "CODECOV_WRAPPER_VERSION=$version" >> $GITHUB_OUTPUT
+          env_changes=$(git diff $(git tag --sort version:refname | tail -n 2 | head -n 1) $(git tag --sort version:refname | tail -n 1) env)
+          echo "CODECOV_ENV_CHANGES=$env_changes" >> $GITHUB_OUTPUT
 
   bitrise-step:
     needs: set-version
@@ -29,6 +31,7 @@ jobs:
     with:
       repository: "codecov-bitrise"
       version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
+      env_changes: "${{ needs.set-version.outputs.CODECOV_ENV_CHANGES }}"
     secrets: inherit
 
   circleci-orb:
@@ -37,6 +40,7 @@ jobs:
     with:
       repository: "codecov-circleci-orb"
       version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
+      env_changes: "${{ needs.set-version.outputs.CODECOV_ENV_CHANGES }}"
     secrets: inherit
 
   github-action:
@@ -45,4 +49,5 @@ jobs:
     with:
       repository: "codecov-action"
       version: "${{ needs.set-version.outputs.CODECOV_WRAPPER_VERSION }}"
+      env_changes: "${{ needs.set-version.outputs.CODECOV_ENV_CHANGES }}"
     secrets: inherit

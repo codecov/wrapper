@@ -8,6 +8,9 @@ elif [ "$CODECOV_RUN_COMMAND" == "pr-base-picking" ]; then
   . ./set_pr_base_picking_args.sh
 elif [ "$CODECOV_RUN_COMMAND" == "send-notifications" ]; then
   . ./set_send_notifications_args.sh
+else
+  exit_if_error "Invalid run command specified: $CODECOV_RUN_COMMAND"
+  exit
 fi
 
 unset NODE_OPTIONS

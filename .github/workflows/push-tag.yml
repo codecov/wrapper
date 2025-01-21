@@ -10,6 +10,9 @@ on:  # yamllint disable-line rule:truthy
       version:
         required: true
         type: string
+      env_changes:
+        required: true
+        type: string
 
 jobs:
   run:
@@ -24,6 +27,7 @@ jobs:
         run: |
           echo "repository: ${{ inputs.repository }}"
           echo "version: ${{ inputs.version }}"
+          echo "env_changes: ${{ inputs.env_changes }}"
 
       - name: Generate a token
         id: app-token
@@ -65,7 +69,6 @@ jobs:
 
       - name: Create pull request into main
         run: |
-          ENV_CHANGES=$(git diff $(git tag --sort version:refname | tail -n 2 | head -n 1) $(git tag --sort version:refname | tail -n 1) env)
-          gh pr create --title "chore(release): wrapper -${{ inputs.version }}" --body "$ENV_CHANGES" --base "main"
+          gh pr create --title "chore(release): wrapper -${{ inputs.version }}" --body "${{ inputs.env_changes }}" --base "main"
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
