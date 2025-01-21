@@ -6,5 +6,5 @@
 . ./validate.sh
 
 . ./set_cli_args.sh
-. ./set_upload_coverage_args.sh
-. ./upload.sh
+. ./set_token.sh
+. ./run_command.sh
