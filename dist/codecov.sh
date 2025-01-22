@@ -59,7 +59,7 @@ then
   fi
 elif [ "$CC_USE_PYPI" == "true" ];
 then
-  if ! pip install codecov-cli; then
+  if ! pip install codecov-cli"$([ "$CC_VERSION" == "latest" ] && echo "" || echo "==$CC_VERSION" )"; then
     exit_if_error "Could not install via pypi."
     exit
   fi
@@ -124,6 +124,7 @@ CC_PUBLIC_PGP_KEY=$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)
   fi
   say "$g==>$x CLI integrity verified"
   say
+  chmod +x "$cc_command"
 fi
 if [ -n "$CC_BINARY_LOCATION" ];
 then
@@ -245,7 +246,6 @@ else
 fi
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
-chmod +x "$cc_command"
 say "$g==>$x Running $CC_RUN_COMMAND"
 say "      $b$cc_command $(echo "${cc_cli_args[@]}")$CC_RUN_COMMAND$token_str $(echo "${cc_args[@]}")$x"
 if ! $cc_command \

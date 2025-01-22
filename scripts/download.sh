@@ -11,7 +11,7 @@ then
   fi
 elif [ "$CODECOV_USE_PYPI" == "true" ];
 then
-  if ! pip install codecov-cli; then
+  if ! pip install codecov-cli"$([ "$CODECOV_VERSION" == "latest" ] && echo "" || echo "==$CODECOV_VERSION" )"; then
     exit_if_error "Could not install via pypi."
     exit
   fi

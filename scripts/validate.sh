@@ -31,6 +31,7 @@ else
   fi
   say "$g==>$x CLI integrity verified"
   say
+  chmod +x "$codecov_command"
 fi
 
 if [ -n "$CODECOV_BINARY_LOCATION" ];

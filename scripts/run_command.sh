@@ -16,8 +16,6 @@ fi
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
 
-chmod +x "$codecov_command"
-
 say "$g==>$x Running $CODECOV_RUN_COMMAND"
 say "      $b$codecov_command $(echo "${codecov_cli_args[@]}")$CODECOV_RUN_COMMAND$token_str $(echo "${codecov_args[@]}")$x"
 if ! $codecov_command \
