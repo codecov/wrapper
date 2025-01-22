@@ -19,12 +19,12 @@ unset NODE_OPTIONS
 chmod +x "$codecov_command"
 
 say "$g==>$x Running $CODECOV_RUN_COMMAND"
-say "      $b$codecov_command $(echo "${codecov_cli_args[@]}")$CODECOV_RUN_COMMAND$token_str $(echo "${codecov_run_args[@]}")$x"
+say "      $b$codecov_command $(echo "${codecov_cli_args[@]}")$CODECOV_RUN_COMMAND$token_str $(echo "${codecov_args[@]}")$x"
 if ! $codecov_command \
   ${codecov_cli_args[*]} \
   ${CODECOV_RUN_COMMAND} \
   ${token_arg[*]} \
-  "${codecov_run_args[@]}";
+  "${codecov_args[@]}";
 then
   exit_if_error "Failed to run $CODECOV_RUN_COMMAND"
 fi

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-if [ "$CODECOV_SKIP_VALIDATION" = "true" ] || [ -n "$CODECOV_BINARY" ];
+if [ "$CODECOV_SKIP_VALIDATION" == "true" ] || [ -n "$CODECOV_BINARY" ] || [ "$CODECOV_USE_PYPI" == "true" ];
 then
-  say "$r==>$x Bypassing validation as requested by user"
+  say "$r==>$x Bypassing validation..."
 else
   . ./set_validation_key.sh
   echo "${CODECOV_PUBLIC_PGP_KEY}"  | \
