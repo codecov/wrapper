@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.0.34"
+CC_WRAPPER_VERSION="0.1.0"
 set +u
 say() {
   echo -e "$1"
@@ -47,7 +47,7 @@ say "     _____          _
                                   "
 CC_VERSION="${CC_VERSION:-latest}"
 CC_FAIL_ON_ERROR="${CC_FAIL_ON_ERROR:-false}"
-CC_RUN_COMMAND="${CC_RUN_COMMAND:-upload-coverage}"
+CC_RUN_CMD="${CC_RUN_CMD:-upload-coverage}"
 if [ -n "$CC_BINARY" ];
 then
   if [ -f "$CC_BINARY" ];
@@ -159,7 +159,7 @@ then
   token_str+=" -t <redacted>"
   token_arg+=( " -t " "$token")
 fi
-if [ "$CC_RUN_COMMAND" == "upload-coverage" ]; then
+if [ "$CC_RUN_CMD" == "upload-coverage" ]; then
 cc_args=()
 # Args for create commit
 cc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
@@ -221,38 +221,38 @@ fi
 cc_args+=( $(k_arg REPORT_TYPE) $(v_arg REPORT_TYPE))
 cc_args+=( $(k_arg SWIFT_PROJECT) $(v_arg SWIFT_PROJECT))
 IFS=$OLDIFS
-elif [ "$CC_RUN_COMMAND" == "empty-upload" ]; then
+elif [ "$CC_RUN_CMD" == "empty-upload" ]; then
 cc_args=()
 cc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
 cc_args+=( $(write_truthy_args CC_FORCE) )
 cc_args+=( $(k_arg GIT_SERVICE) $(v_arg GIT_SERVICE))
 cc_args+=( $(k_arg SHA) $(v_arg SHA))
 cc_args+=( $(k_arg SLUG) $(v_arg SLUG))
-elif [ "$CC_RUN_COMMAND" == "pr-base-picking" ]; then
+elif [ "$CC_RUN_CMD" == "pr-base-picking" ]; then
 cc_args=()
 cc_args+=( $(k_arg BASE_SHA) $(v_arg BASE_SHA))
 cc_args+=( $(k_arg PR) $(v_arg PR))
 cc_args+=( $(k_arg SLUG) $(v_arg SLUG))
 cc_args+=( $(k_arg SERVICE) $(v_arg SERVICE))
-elif [ "$CC_RUN_COMMAND" == "send-notifications" ]; then
+elif [ "$CC_RUN_CMD" == "send-notifications" ]; then
 cc_args=()
 cc_args+=( $(k_arg SHA) $(v_arg SHA))
 cc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
 cc_args+=( $(k_arg GIT_SERVICE) $(v_arg GIT_SERVICE))
 cc_args+=( $(k_arg SLUG) $(v_arg SLUG))
 else
-  exit_if_error "Invalid run command specified: $CC_RUN_COMMAND"
+  exit_if_error "Invalid run command specified: $CC_RUN_CMD"
   exit
 fi
 unset NODE_OPTIONS
 # See https://github.com/codecov/uploader/issues/475
-say "$g==>$x Running $CC_RUN_COMMAND"
-say "      $b$cc_command $(echo "${cc_cli_args[@]}")$CC_RUN_COMMAND$token_str $(echo "${cc_args[@]}")$x"
+say "$g==>$x Running $CC_RUN_CMD"
+say "      $b$cc_command $(echo "${cc_cli_args[@]}")$CC_RUN_CMD$token_str $(echo "${cc_args[@]}")$x"
 if ! $cc_command \
   ${cc_cli_args[*]} \
-  ${CC_RUN_COMMAND} \
+  ${CC_RUN_CMD} \
   ${token_arg[*]} \
   "${cc_args[@]}";
 then
-  exit_if_error "Failed to run $CC_RUN_COMMAND"
+  exit_if_error "Failed to run $CC_RUN_CMD"
 fi
