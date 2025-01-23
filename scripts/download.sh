@@ -9,6 +9,13 @@ then
   else
     exit_if_error "Could not find binary file $CODECOV_BINARY"
   fi
+elif [ "$CODECOV_USE_PYPI" == "true" ];
+then
+  if ! pip install codecov-cli"$([ "$CODECOV_VERSION" == "latest" ] && echo "" || echo "==$CODECOV_VERSION" )"; then
+    exit_if_error "Could not install via pypi."
+    exit
+  fi
+  codecov_command="codecovcli"
 else
   if [ -n "$CODECOV_OS" ];
   then
