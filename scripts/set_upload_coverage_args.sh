@@ -51,9 +51,10 @@ codecov_args+=( $(k_arg GCOV_ARGS) $(v_arg GCOV_ARGS))
 codecov_args+=( $(k_arg GCOV_EXECUTABLE) $(v_arg GCOV_EXECUTABLE))
 codecov_args+=( $(k_arg GCOV_IGNORE) $(v_arg GCOV_IGNORE))
 codecov_args+=( $(k_arg GCOV_INCLUDE) $(v_arg GCOV_INCLUDE))
-codecov_args+=( $(write_truthy_args CODECOV_HANDLE_NO_REPORTS_FOUND) )
+codecov_args+=( $(write_bool_args CODECOV_HANDLE_NO_REPORTS_FOUND) )
+codecov_args+=( $(write_bool_args CODECOV_RECURSE_SUBMODULES) )
 codecov_args+=( $(k_arg JOB_CODE) $(v_arg JOB_CODE))
-codecov_args+=( $(write_truthy_args CODECOV_LEGACY) )
+codecov_args+=( $(write_bool_args CODECOV_LEGACY) )
 if [ -n "$CODECOV_NAME" ];
 then
   codecov_args+=( "--name" "$CODECOV_NAME" )
