@@ -3,7 +3,7 @@
 codecov_args=()
 
 # Args for create commit
-codecov_args+=( $(write_truthy_args CODECOV_FAIL_ON_ERROR) )
+codecov_args+=( $(write_bool_args CODECOV_FAIL_ON_ERROR) )
 codecov_args+=( $(k_arg GIT_SERVICE) $(v_arg GIT_SERVICE))
 codecov_args+=( $(k_arg PARENT_SHA) $(v_arg PARENT_SHA))
 codecov_args+=( $(k_arg PR) $(v_arg PR))
@@ -22,9 +22,9 @@ codecov_args+=( $(k_arg BRANCH) $(v_arg BRANCH))
 codecov_args+=( $(k_arg BUILD) $(v_arg BUILD))
 codecov_args+=( $(k_arg BUILD_URL) $(v_arg BUILD_URL))
 codecov_args+=( $(k_arg DIR) $(v_arg DIR))
-codecov_args+=( $(write_truthy_args CODECOV_DISABLE_FILE_FIXES) )
-codecov_args+=( $(write_truthy_args CODECOV_DISABLE_SEARCH) )
-codecov_args+=( $(write_truthy_args CODECOV_DRY_RUN) )
+codecov_args+=( $(write_bool_args CODECOV_DISABLE_FILE_FIXES) )
+codecov_args+=( $(write_bool_args CODECOV_DISABLE_SEARCH) )
+codecov_args+=( $(write_bool_args CODECOV_DRY_RUN) )
 
 if [ -n "$CODECOV_EXCLUDES" ];
 then

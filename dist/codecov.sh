@@ -162,7 +162,7 @@ fi
 if [ "$CC_RUN_CMD" == "upload-coverage" ]; then
 cc_args=()
 # Args for create commit
-cc_args+=( $(write_truthy_args CC_FAIL_ON_ERROR) )
+cc_args+=( $(write_bool_args CC_FAIL_ON_ERROR) )
 cc_args+=( $(k_arg GIT_SERVICE) $(v_arg GIT_SERVICE))
 cc_args+=( $(k_arg PARENT_SHA) $(v_arg PARENT_SHA))
 cc_args+=( $(k_arg PR) $(v_arg PR))
@@ -177,9 +177,9 @@ cc_args+=( $(k_arg BRANCH) $(v_arg BRANCH))
 cc_args+=( $(k_arg BUILD) $(v_arg BUILD))
 cc_args+=( $(k_arg BUILD_URL) $(v_arg BUILD_URL))
 cc_args+=( $(k_arg DIR) $(v_arg DIR))
-cc_args+=( $(write_truthy_args CC_DISABLE_FILE_FIXES) )
-cc_args+=( $(write_truthy_args CC_DISABLE_SEARCH) )
-cc_args+=( $(write_truthy_args CC_DRY_RUN) )
+cc_args+=( $(write_bool_args CC_DISABLE_FILE_FIXES) )
+cc_args+=( $(write_bool_args CC_DISABLE_SEARCH) )
+cc_args+=( $(write_bool_args CC_DRY_RUN) )
 if [ -n "$CC_EXCLUDES" ];
 then
   for directory in $CC_EXCLUDES; do
