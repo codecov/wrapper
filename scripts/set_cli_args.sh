@@ -9,5 +9,5 @@ then
   codecov_cli_args+=( "--codecov-yml-path" )
   codecov_cli_args+=( "$CODECOV_YML_PATH" )
 fi
-codecov_cli_args+=( $(write_truthy_args CODECOV_DISABLE_TELEM) )
-codecov_cli_args+=( $(write_truthy_args CODECOV_VERBOSE) )
+codecov_cli_args+=( $(write_bool_args CODECOV_DISABLE_TELEM) )
+codecov_cli_args+=( $(write_bool_args CODECOV_VERBOSE) )
