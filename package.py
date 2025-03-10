@@ -26,7 +26,7 @@ def package_scripts(source_dir, source_root, outfile):
 
     print(f"Current script is {len(''.join(lines))} (max: 8192) chars.")
     if len(''.join(lines)) > 8192:
-        print("Due to windows limitiations, script must be under 8192 chars.")
+        print("Due to windows limitations, script must be under 8192 chars.")
         exit(1)
 
 def _get_vars(line):
@@ -58,7 +58,7 @@ def _parse(file):
     return lines
 
 def _shorten_line(line):
-    return line.replace("CODECOV", "CC").replace("codecov_", "cc_")
+    return line.replace("CODECOV", "CC").replace("codecov_", "c")
 
 def _get_script_from_line(line):
     matcher = r'\s*\. \.\/(\S+\.sh)$'  #. ./version.sh
