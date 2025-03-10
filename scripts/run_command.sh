@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+codecov_args=()
 if [ "$CODECOV_RUN_CMD" == "upload-coverage" ]; then
   . ./set_upload_coverage_args.sh
 elif [ "$CODECOV_RUN_CMD" == "empty-upload" ]; then
@@ -14,7 +15,7 @@ else
 fi
 
 unset NODE_OPTIONS
-# https://github.com/codecov/uploader/issues/475
+# github.com/codecov/uploader/issues/475
 
 say "$g==>$x Running $CODECOV_RUN_CMD"
 say "      $b$codecov_command $(echo "${codecov_cli_args[@]}") $CODECOV_RUN_CMD$token_str $(echo "${codecov_args[@]}")$x"

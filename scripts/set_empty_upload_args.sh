@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-codecov_args=()
-
 codecov_args+=( $(k_arg BRANCH) $(v_arg BRANCH))
 codecov_args+=( $(write_bool_args CODECOV_FAIL_ON_ERROR) )
 codecov_args+=( $(write_bool_args CODECOV_FORCE) )
