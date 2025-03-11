@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-codecov_args=()
-
 # Args for create commit
 codecov_args+=( $(write_bool_args CODECOV_FAIL_ON_ERROR) )
 codecov_args+=( $(k_arg GIT_SERVICE) $(v_arg GIT_SERVICE))
