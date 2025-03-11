@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.2.0"
+CC_WRAPPER_VERSION="0.2.1"
 set +u
 say() {
   echo -e "$1"
