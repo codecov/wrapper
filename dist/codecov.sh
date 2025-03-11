@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.2.1"
+CC_WRAPPER_VERSION="0.2.2"
 set +u
 say() {
   echo -e "$1"
@@ -151,7 +151,7 @@ then
 else
   token="$(eval echo $CC_TOKEN)"
 fi
-say "$g ->$x Token of length ${#token} detected"
+say "$g ->$x Token length: ${#token}"
 token_str=""
 token_arg=()
 if [ -n "$token" ];

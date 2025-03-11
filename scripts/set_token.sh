@@ -7,7 +7,7 @@ else
   token="$(eval echo $CODECOV_TOKEN)"
 fi
 
-say "$g ->$x Token of length ${#token} detected"
+say "$g ->$x Token length: ${#token}"
 token_str=""
 token_arg=()
 if [ -n "$token" ];
