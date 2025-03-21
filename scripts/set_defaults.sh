@@ -43,6 +43,7 @@ b="\033[0;36m"  # variables/constants
 g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors
 x="\033[0m"
+retry="--retry 5 --retry-delay 2"
 
 say "     _____          _
     / ____|        | |

@@ -16,8 +16,8 @@ else
   say "$g ->$x Downloading $b${sha_url}.sig$x"
   say " "
 
-  curl -Os --retry 5 --retry-delay 2 --connect-timeout 2 "$sha_url"
-  curl -Os --retry 5 --retry-delay 2 --connect-timeout 2 "${sha_url}.sig"
+  curl -Os $retry --connect-timeout 2 "$sha_url"
+  curl -Os $retry --connect-timeout 2 "${sha_url}.sig"
 
   if ! gpg --verify "${codecov_filename}.SHA256SUM.sig" "${codecov_filename}.SHA256SUM";
   then

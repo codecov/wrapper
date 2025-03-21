@@ -42,11 +42,11 @@ else
   codecov_url="$codecov_url/${CODECOV_VERSION}"
   codecov_url="$codecov_url/${CODECOV_OS}/${codecov_filename}"
   say "$g ->$x Downloading $b${codecov_url}$x"
-  curl -O --retry 5 --retry-delay 2 "$codecov_url"
+  curl -O $retry "$codecov_url"
   say "$g==>$x Finishing downloading $b${CODECOV_OS}:${CODECOV_VERSION}$x"
 
-  version_url="https://cli.codecov.io/api/${CODECOV_OS}/${CODECOV_VERSION}"
-  version=$(curl -s "$version_url" -H "Accept:application/json" | tr \{ '\n' | tr , '\n' | tr \} '\n' | grep "\"version\"" | awk  -F'"' '{print $4}' | tail -1)
-  say "      Version: $b$version$x"
+  v_url="https://cli.codecov.io/api/${CODECOV_OS}/${CODECOV_VERSION}"
+  v=$(curl $retry --retry-all-errors -s "$v_url" -H "Accept:application/json" | tr \{ '\n' | tr , '\n' | tr \} '\n' | grep "\"version\"" | awk  -F'"' '{print $4}' | tail -1)
+  say "      Version: $b$v$x"
   say " "
 fi
