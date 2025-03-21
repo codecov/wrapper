@@ -46,7 +46,7 @@ else
   say "$g==>$x Finishing downloading $b${CODECOV_OS}:${CODECOV_VERSION}$x"
 
   version_url="https://cli.codecov.io/api/${CODECOV_OS}/${CODECOV_VERSION}"
-  version=$(curl -s "$version_url" -H "Accept:application/json" | tr \{ '\n' | tr , '\n' | tr \} '\n' | grep "\"version\"" | awk  -F'"' '{print $4}' | tail -1)
+  version=$(curl --retry 5 --retry-delay 2 --retry-all-errors -s "$version_url" -H "Accept:application/json" | tr \{ '\n' | tr , '\n' | tr \} '\n' | grep "\"version\"" | awk  -F'"' '{print $4}' | tail -1)
   say "      Version: $b$version$x"
   say " "
 fi
