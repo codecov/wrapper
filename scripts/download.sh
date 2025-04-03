@@ -38,7 +38,7 @@ else
   [[ $CODECOV_OS == "macos" ]]  && \
     ! command -v gpg 2>&1 >/dev/null && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
-  codecov_url="https://cli.codecov.io"
+  codecov_url="${CODECOV_CLI_URL:-https://cli.codecov.io}"
   codecov_url="$codecov_url/${CODECOV_VERSION}"
   codecov_url="$codecov_url/${CODECOV_OS}/${codecov_filename}"
   say "$g ->$x Downloading $b${codecov_url}$x"
