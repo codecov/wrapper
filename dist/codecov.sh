@@ -86,7 +86,7 @@ else
   [[ $CC_OS == "macos" ]]  && \
     ! command -v gpg 2>&1 >/dev/null && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
-  c_url="https://cli.codecov.io"
+  c_url="${CC_CLI_URL:-https://cli.codecov.io}"
   c_url="$c_url/${CC_VERSION}"
   c_url="$c_url/${CC_OS}/${c_filename}"
   say "$g ->$x Downloading $b${c_url}$x"
