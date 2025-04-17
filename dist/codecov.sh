@@ -49,6 +49,11 @@ say "     _____          _
     \\_____\\___/ \\__,_|\\___|\\___\\___/ \\_/
                            $r Wrapper-$CODECOV_WRAPPER_VERSION$x
                            "
+CODECOV_CLI_TYPE=${CODECOV_CLI_TYPE:-"codecov"}
+if [[ "$CODECOV_CLI_TYPE" != "codecov" && "$CODECOV_CLI_TYPE" != "prevent" ]]; then
+  echo "Invalid CODECOV_CLI_TYPE: '$CODECOV_CLI_TYPE'. Must be 'codecov' or 'prevent'"
+  exit 1
+fi
 if [ -n "$CODECOV_BINARY" ];
 then
   if [ -f "$CODECOV_BINARY" ];
@@ -60,11 +65,11 @@ then
   fi
 elif [ "$CODECOV_USE_PYPI" == "true" ];
 then
-  if ! pip install codecov-cli"$([ "$CODECOV_VERSION" == "latest" ] && echo "" || echo "==$CODECOV_VERSION" )"; then
+  if ! pip install "${CODECOV_CLI_TYPE}-cli$([ "$CODECOV_VERSION" == "latest" ] && echo "" || echo "==$CODECOV_VERSION")"; then
     exit_if_error "Could not install via pypi."
     exit
   fi
-  CODECOV_COMMAND="codecovcli"
+CODECOV_COMMAND="${CODECOV_CLI_TYPE}cli"
 else
   if [ -n "$CODECOV_OS" ];
   then
@@ -80,8 +85,8 @@ else
     [[ $(arch) == "aarch64" && $family == "linux" ]] && CODECOV_OS+="-arm64"
     say "$g==>$x Detected $b${CODECOV_OS}$x"
   fi
-  CODECOV_FILENAME="codecov"
-  [[ $CODECOV_OS == "windows" ]] && CODECOV_FILENAME+=".exe"
+  CODECOV_FILENAME="${CODECOV_CLI_TYPE}"
+  [[ $CODECOV_OS == "windows" ]] && codecov_filename+=".exe"
   CODECOV_COMMAND="./$CODECOV_FILENAME"
   [[ $CODECOV_OS == "macos" ]]  && \
     ! command -v gpg 2>&1 >/dev/null && \
@@ -129,11 +134,11 @@ fi
 if [ -n "$CODECOV_BINARY_LOCATION" ];
 then
   mkdir -p "$CODECOV_BINARY_LOCATION" && mv "$CODECOV_FILENAME" $_
-  say "$g==>$x Codecov binary moved to ${CODECOV_BINARY_LOCATION}"
+  say "$g==>$x ${CODECOV_CLI_TYPE} binary moved to ${CODECOV_BINARY_LOCATION}"
 fi
 if [ "$CODECOV_DOWNLOAD_ONLY" = "true" ];
 then
-  say "$g==>$x Codecov download only called. Exiting..."
+  say "$g==>$x ${CODECOV_CLI_TYPE} download only called. Exiting..."
 fi
 CODECOV_CLI_ARGS=()
 CODECOV_CLI_ARGS+=( $(k_arg AUTO_LOAD_PARAMS_FROM) $(v_arg AUTO_LOAD_PARAMS_FROM))

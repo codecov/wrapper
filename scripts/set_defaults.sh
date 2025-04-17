@@ -13,3 +13,10 @@ say "     _____          _
     \\_____\\___/ \\__,_|\\___|\\___\\___/ \\_/
                            $r Wrapper-$CODECOV_WRAPPER_VERSION$x
                            "
+
+CODECOV_CLI_TYPE=${CODECOV_CLI_TYPE:-"codecov"}
+
+if [[ "$CODECOV_CLI_TYPE" != "codecov" && "$CODECOV_CLI_TYPE" != "prevent" ]]; then
+  echo "Invalid CODECOV_CLI_TYPE: '$CODECOV_CLI_TYPE'. Must be 'codecov' or 'prevent'"
+  exit 1
+fi
