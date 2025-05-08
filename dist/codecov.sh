@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-CC_WRAPPER_VERSION="0.2.2"
 set +u
 say() {
   echo -e "$1"
@@ -38,6 +37,10 @@ g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors
 x="\033[0m"
 retry="--retry 5 --retry-delay 2"
+CC_WRAPPER_VERSION="0.2.3"
+CC_VERSION="${CC_VERSION:-latest}"
+CC_FAIL_ON_ERROR="${CC_FAIL_ON_ERROR:-false}"
+CC_RUN_CMD="${CC_RUN_CMD:-upload-coverage}"
 say "     _____          _
     / ____|        | |
    | |     ___   __| | ___  ___ _____   __
@@ -45,10 +48,7 @@ say "     _____          _
    | |___| (_) | (_| |  __/ (_| (_) \\ V /
     \\_____\\___/ \\__,_|\\___|\\___\\___/ \\_/
                            $r Wrapper-$CC_WRAPPER_VERSION$x
-                                  "
-CC_VERSION="${CC_VERSION:-latest}"
-CC_FAIL_ON_ERROR="${CC_FAIL_ON_ERROR:-false}"
-CC_RUN_CMD="${CC_RUN_CMD:-upload-coverage}"
+                           "
 if [ -n "$CC_BINARY" ];
 then
   if [ -f "$CC_BINARY" ];

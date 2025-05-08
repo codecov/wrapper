@@ -1,5 +1,5 @@
 deploy:
-	$(eval VERSION := $(shell cat scripts/version.sh | grep 'CODECOV_WRAPPER_VERSION=' | cut -d\" -f2))
+	$(eval VERSION := $(shell cat scripts/set_defaults.sh | grep 'CODECOV_WRAPPER_VERSION=' | cut -d\" -f2))
 	git tag -d v0
 	git push origin :v0
 	git tag v0

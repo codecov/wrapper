@@ -1,19 +1,5 @@
 #!/usr/bin/env bash
 
-codecov_args=()
-if [ "$CODECOV_RUN_CMD" == "upload-coverage" ]; then
-  . ./set_upload_coverage_args.sh
-elif [ "$CODECOV_RUN_CMD" == "empty-upload" ]; then
-  . ./set_empty_upload_args.sh
-elif [ "$CODECOV_RUN_CMD" == "pr-base-picking" ]; then
-  . ./set_pr_base_picking_args.sh
-elif [ "$CODECOV_RUN_CMD" == "send-notifications" ]; then
-  . ./set_send_notifications_args.sh
-else
-  exit_if_error "Invalid run command specified: $CODECOV_RUN_CMD"
-  exit
-fi
-
 unset NODE_OPTIONS
 # github.com/codecov/uploader/issues/475
 
