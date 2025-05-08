@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CC_WRAPPER_VERSION="0.2.2"
+CC_WRAPPER_VERSION="0.2.3"
 CC_VERSION="${CC_VERSION:-latest}"
 CC_FAIL_ON_ERROR="${CC_FAIL_ON_ERROR:-false}"
 CC_RUN_CMD="${CC_RUN_CMD:-upload-coverage}"
