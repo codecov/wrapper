@@ -24,11 +24,6 @@ def package_scripts(source_dir, source_root, outfile):
         for var in sorted_vars:
             f.write(f'{var}\n')
 
-    print(f"Current script is {len(''.join(lines))} (max: 8191) chars.")
-    if len(''.join(lines)) > 8191:
-        print("Due to windows limitations, script must be under 8191 chars.")
-        exit(1)
-
 def _get_vars(line):
     matcher = r'(CC_[\w_]+)'
     matches = re.search(matcher, line)

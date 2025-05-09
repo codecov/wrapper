@@ -37,7 +37,7 @@ g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors
 x="\033[0m"
 retry="--retry 5 --retry-delay 2"
-CC_WRAPPER_VERSION="0.2.3"
+CC_WRAPPER_VERSION="0.2.4"
 CC_VERSION="${CC_VERSION:-latest}"
 CC_FAIL_ON_ERROR="${CC_FAIL_ON_ERROR:-false}"
 CC_RUN_CMD="${CC_RUN_CMD:-upload-coverage}"
@@ -101,7 +101,7 @@ if [ "$CC_SKIP_VALIDATION" == "true" ] || [ -n "$CC_BINARY" ] || [ "$CC_USE_PYPI
 then
   say "$r==>$x Bypassing validation..."
 else
-CC_PUBLIC_PGP_KEY=$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)
+  CC_PUBLIC_PGP_KEY=$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)
   echo "${CC_PUBLIC_PGP_KEY}"  | \
     gpg --no-default-keyring --import
   # One-time step
