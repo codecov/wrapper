@@ -37,7 +37,7 @@ g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors
 x="\033[0m"
 retry="--retry 5 --retry-delay 2"
-CODECOV_WRAPPER_VERSION="0.2.5"
+CODECOV_WRAPPER_VERSION="0.2.6"
 CODECOV_VERSION="${CODECOV_VERSION:-latest}"
 CODECOV_FAIL_ON_ERROR="${CODECOV_FAIL_ON_ERROR:-false}"
 CODECOV_RUN_CMD="${CODECOV_RUN_CMD:-upload-coverage}"
@@ -101,7 +101,7 @@ if [ "$CODECOV_SKIP_VALIDATION" == "true" ] || [ -n "$CODECOV_BINARY" ] || [ "$C
 then
   say "$r==>$x Bypassing validation..."
 else
-  echo $(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc) | \
+  echo "$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)" | \
     gpg --no-default-keyring --import
   # One-time step
   say "$g==>$x Verifying GPG signature integrity"
