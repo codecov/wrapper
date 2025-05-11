@@ -1,33 +1,18 @@
 #!/usr/bin/env bash
 
-codecov_cli_args=()
+CODECOV_CLI_ARGS=()
 
-codecov_cli_args+=( $(k_arg AUTO_LOAD_PARAMS_FROM) $(v_arg AUTO_LOAD_PARAMS_FROM))
-codecov_cli_args+=( $(k_arg ENTERPRISE_URL) $(v_arg ENTERPRISE_URL))
+CODECOV_CLI_ARGS+=( $(k_arg AUTO_LOAD_PARAMS_FROM) $(v_arg AUTO_LOAD_PARAMS_FROM))
+CODECOV_CLI_ARGS+=( $(k_arg ENTERPRISE_URL) $(v_arg ENTERPRISE_URL))
 if [ -n "$CODECOV_YML_PATH" ]
 then
-  codecov_cli_args+=( "--codecov-yml-path" )
-  codecov_cli_args+=( "$CODECOV_YML_PATH" )
+  CODECOV_CLI_ARGS+=( "--codecov-yml-path" )
+  CODECOV_CLI_ARGS+=( "$CODECOV_YML_PATH" )
 fi
-codecov_cli_args+=( $(write_bool_args CODECOV_DISABLE_TELEM) )
-codecov_cli_args+=( $(write_bool_args CODECOV_VERBOSE) )
+CODECOV_CLI_ARGS+=( $(write_bool_args CODECOV_DISABLE_TELEM) )
+CODECOV_CLI_ARGS+=( $(write_bool_args CODECOV_VERBOSE) )
 
-if [ -n "$CODECOV_TOKEN_VAR" ];
-then
-  token="$(eval echo \$$CODECOV_TOKEN_VAR)"
-else
-  token="$(eval echo $CODECOV_TOKEN)"
-fi
-say "$g ->$x Token length: ${#token}"
-token_str=""
-token_arg=()
-if [ -n "$token" ];
-then
-  token_str+=" -t <redacted>"
-  token_arg+=( " -t " "$token")
-fi
-
-codecov_args=()
+CODECOV_ARGS=()
 if [ "$CODECOV_RUN_CMD" == "upload-coverage" ]; then
   . ./set_upload_coverage_args.sh
 elif [ "$CODECOV_RUN_CMD" == "empty-upload" ]; then

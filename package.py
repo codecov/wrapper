@@ -25,7 +25,7 @@ def package_scripts(source_dir, source_root, outfile):
             f.write(f'{var}\n')
 
 def _get_vars(line):
-    matcher = r'(CC_[\w_]+)'
+    matcher = r'(CODECOV_[\w_]+)'
     matches = re.search(matcher, line)
     if matches and matches.groups():
         return matches.groups()[0]
@@ -48,12 +48,8 @@ def _parse(file):
             if script is not None:
                 lines.extend(_parse(os.path.join(os.path.dirname(file), script)))
             else:
-                shortened_line = _shorten_line(line)
-                lines.append(shortened_line)
+                lines.append(line)
     return lines
-
-def _shorten_line(line):
-    return line.replace("CODECOV", "CC").replace("codecov_", "c_")
 
 def _get_script_from_line(line):
     matcher = r'\s*\. \.\/(\S+\.sh)$'  #. ./version.sh
