@@ -11,11 +11,11 @@ then
   fi
 elif [ "$CODECOV_USE_PYPI" == "true" ];
 then
-  if ! pip install codecov-cli"$([ "$CODECOV_VERSION" == "latest" ] && echo "" || echo "==$CODECOV_VERSION" )"; then
+  if ! pip install "${CODECOV_CLI_TYPE}$([ "$CODECOV_VERSION" == "latest" ] && echo "" || echo "==$CODECOV_VERSION")"; then
     exit_if_error "Could not install via pypi."
     exit
   fi
-  CODECOV_COMMAND="codecovcli"
+  CODECOV_COMMAND="${CODECOV_CLI_TYPE}"
 else
   if [ -n "$CODECOV_OS" ];
   then
@@ -32,7 +32,7 @@ else
     say "$g==>$x Detected $b${CODECOV_OS}$x"
   fi
 
-  CODECOV_FILENAME="codecov"
+  CODECOV_FILENAME="${CODECOV_CLI_TYPE%-cli}"
   [[ $CODECOV_OS == "windows" ]] && CODECOV_FILENAME+=".exe"
   CODECOV_COMMAND="./$CODECOV_FILENAME"
   [[ $CODECOV_OS == "macos" ]]  && \
