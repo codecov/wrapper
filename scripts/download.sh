@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 if [ -n "$CODECOV_BINARY" ];
 then
@@ -9,9 +9,9 @@ then
   else
     exit_if_error "Could not find binary file $CODECOV_BINARY"
   fi
-elif [ "$CODECOV_USE_PYPI" == "true" ];
+elif [ "$CODECOV_USE_PYPI" = "true" ];
 then
-  if ! pip install "${CODECOV_CLI_TYPE}$([ "$CODECOV_VERSION" == "latest" ] && echo "" || echo "==$CODECOV_VERSION")"; then
+  if ! pip install "${CODECOV_CLI_TYPE}$([ "$CODECOV_VERSION" = "latest" ] && echo "" || echo "==$CODECOV_VERSION")"; then
     exit_if_error "Could not install via pypi."
     exit
   fi
@@ -23,19 +23,19 @@ else
   else
     CODECOV_OS="windows"
     family=$(uname -s | tr '[:upper:]' '[:lower:]')
-    [[ $family == "darwin" ]] && CODECOV_OS="macos"
-    [[ $family == "linux" ]] && CODECOV_OS="linux"
-    [[ $CODECOV_OS == "linux" ]] && \
+    [ "$family" = "darwin" ] && CODECOV_OS="macos"
+    [ "$family" = "linux" ] && CODECOV_OS="linux"
+    [ "$CODECOV_OS" = "linux" ] && \
       osID=$(grep -e "^ID=" /etc/os-release | cut -c4-)
-    [[ $osID == "alpine" ]] && CODECOV_OS="alpine"
-    [[ $(arch) == "aarch64" && $family == "linux" ]] && CODECOV_OS+="-arm64"
+    [ "$osID" = "alpine" ] && CODECOV_OS="alpine"
+    [ "$(arch)" = "aarch64" ] && [ "$family" = "linux" ] && CODECOV_OS="${CODECOV_OS}-arm64"
     say "$g==>$x Detected $b${CODECOV_OS}$x"
   fi
 
   CODECOV_FILENAME="${CODECOV_CLI_TYPE%-cli}"
-  [[ $CODECOV_OS == "windows" ]] && CODECOV_FILENAME+=".exe"
+  [ "$CODECOV_OS" = "windows" ] && CODECOV_FILENAME="${CODECOV_FILENAME}.exe"
   CODECOV_COMMAND="./$CODECOV_FILENAME"
-  [[ $CODECOV_OS == "macos" ]]  && \
+  [ "$CODECOV_OS" = "macos" ] && \
     ! command -v gpg 2>&1 >/dev/null && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
   CODECOV_URL="${CODECOV_CLI_URL:-https://cli.codecov.io}"

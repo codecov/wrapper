@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set +u
 say() {
@@ -38,6 +38,9 @@ write_bool_args() {
     echo "-$(lower $1)"
   fi
 }
+
+add_cli_arg() { [ -n "$1" ] && CODECOV_CLI_ARGS="${CODECOV_CLI_ARGS:+$CODECOV_CLI_ARGS }$1"; }
+add_arg() { [ -n "$1" ] && CODECOV_ARGS="${CODECOV_ARGS:+$CODECOV_ARGS }$1"; }
 
 b="\033[0;36m"  # variables/constants
 g="\033[0;32m"  # info/debug

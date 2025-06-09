@@ -1,6 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-CODECOV_ARGS+=( $(k_arg BASE_SHA) $(v_arg BASE_SHA))
-CODECOV_ARGS+=( $(k_arg PR) $(v_arg PR))
-CODECOV_ARGS+=( $(k_arg SLUG) $(v_arg SLUG))
-CODECOV_ARGS+=( $(k_arg SERVICE) $(v_arg SERVICE))
+add_arg "$(k_arg BASE_SHA)"
+add_arg "$(v_arg BASE_SHA)"
+add_arg "$(k_arg PR)"
+add_arg "$(v_arg PR)"
+add_arg "$(k_arg SLUG)"
+add_arg "$(v_arg SLUG)"
+add_arg "$(k_arg SERVICE)"
+add_arg "$(v_arg SERVICE)"

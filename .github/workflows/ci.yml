@@ -1,10 +1,10 @@
 ---
 name: Workflow for Codecov wrapper
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   - push
   - pull_request
 jobs:
-  run:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -12,7 +12,7 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
       - name: Install dependencies
         run: pip install -r app/requirements.txt
       - name: Run tests and collect coverage
@@ -23,12 +23,76 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
           CODECOV_FLAGS: flag1,flag2
-  shellcheck:
+
+  test-macos:
     runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt
+      - name: Run tests and collect coverage
+        run: pytest --cov app ${{ env.CODECOV_ATS_TESTS }}
+      - name: Upload coverage to Codecov
+        run: ./dist/codecov.sh
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_FAIL_ON_ERROR: true
+          CODECOV_FLAGS: flag1,flag2
+
+  test-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt
+      - name: Run tests and collect coverage
+        run: pytest --cov app ${{ env.CODECOV_ATS_TESTS }}
+      - name: Upload coverage to Codecov
+        run: ./dist/codecov.sh
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_FAIL_ON_ERROR: true
+          CODECOV_FLAGS: flag1,flag2
+
+  test-alpine:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:latest
+    steps:
+      - name: Install dependencies
+        run: apk add --no-cache git curl python3 py3-pip
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Python dependencies
+        run: pip install -r app/requirements.txt
+      - name: Run tests and collect coverage
+        run: pytest --cov app ${{ env.CODECOV_ATS_TESTS }}
+      - name: Upload coverage to Codecov
+        run: ./dist/codecov.sh
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_FAIL_ON_ERROR: true
+          CODECOV_FLAGS: flag1,flag2
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Install shellcheck
-        run: brew install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
       - name: Run shellcheck
         run: shellcheck dist/codecov.sh --severity=error
