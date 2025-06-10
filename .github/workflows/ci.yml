@@ -98,7 +98,7 @@ jobs:
           CODECOV_FAIL_ON_ERROR: true
           CODECOV_FLAGS: flag1,flag2
           CODECOV_NAME: 'Alpine: Test''s "CI & Build" Job'
-          GITHUB_ACTIONS: true
+          CODECOV_GIT_SERVICE: github
           CODECOV_VERBOSE: true
 
   shellcheck:
