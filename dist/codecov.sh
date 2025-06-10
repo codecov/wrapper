@@ -32,8 +32,12 @@ write_bool_args() {
     echo "-$(lower $1)"
   fi
 }
-add_cli_arg() { [ -n "$1" ] && CODECOV_CLI_ARGS="${CODECOV_CLI_ARGS:+$CODECOV_CLI_ARGS }$1"; }
-add_arg() { [ -n "$1" ] && CODECOV_ARGS="${CODECOV_ARGS:+$CODECOV_ARGS }$1"; }
+quote_arg() {
+  escaped=$(printf '%s\n' "$1" | sed "s/'/'\\\\''/g")
+  printf "'%s'" "$escaped"
+}
+add_cli_arg() { [ -n "$1" ] && CODECOV_CLI_ARGS="${CODECOV_CLI_ARGS:+$CODECOV_CLI_ARGS }$(quote_arg "$1")"; }
+add_arg() { [ -n "$1" ] && CODECOV_ARGS="${CODECOV_ARGS:+$CODECOV_ARGS }$(quote_arg "$1")"; }
 b="\033[0;36m"  # variables/constants
 g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors

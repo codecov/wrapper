@@ -23,6 +23,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
           CODECOV_FLAGS: flag1,flag2
+          CODECOV_NAME: 'Ubuntu: Test''s "CI & Build" Job'
 
   test-macos:
     runs-on: macos-latest
@@ -43,6 +44,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
           CODECOV_FLAGS: flag1,flag2
+          CODECOV_NAME: 'macOS: Test''s "CI & Build" Job'
 
   test-windows:
     runs-on: windows-latest
@@ -66,6 +68,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
           CODECOV_FLAGS: flag1,flag2
+          CODECOV_NAME: 'Windows: Test''s "CI & Build" Job'
 
   test-alpine:
     runs-on: ubuntu-latest
@@ -86,6 +89,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
           CODECOV_FLAGS: flag1,flag2
+          CODECOV_NAME: 'Alpine: Test''s "CI & Build" Job'
 
   shellcheck:
     runs-on: ubuntu-latest
