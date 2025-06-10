@@ -90,7 +90,9 @@ jobs:
           source .venv/bin/activate
           pytest --cov app ${{ env.CODECOV_ATS_TESTS }}
       - name: Upload coverage to Codecov
-        run: ./dist/codecov.sh
+        run: |
+          source .venv/bin/activate
+          ./dist/codecov.sh
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_FAIL_ON_ERROR: true
