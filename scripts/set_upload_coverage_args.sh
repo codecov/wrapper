@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Args for create commit
 add_arg "$(write_bool_args CODECOV_FAIL_ON_ERROR)"
 add_arg "$(k_arg GIT_SERVICE)"
 add_arg "$(v_arg GIT_SERVICE)"
@@ -13,11 +12,9 @@ add_arg "$(v_arg SHA)"
 add_arg "$(k_arg SLUG)"
 add_arg "$(v_arg SLUG)"
 
-# Args for create report
 add_arg "$(k_arg CODE)"
 add_arg "$(v_arg CODE)"
 
-# Args for do upload
 add_arg "$(k_arg ENV)"
 add_arg "$(v_arg ENV)"
 

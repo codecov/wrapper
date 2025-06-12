@@ -4,7 +4,7 @@ on: # yamllint disable-line rule:truthy
   - push
   - pull_request
 jobs:
-  test:
+  test-linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

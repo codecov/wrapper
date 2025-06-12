@@ -6,7 +6,6 @@ then
 else
   echo "$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)" | \
     gpg --no-default-keyring --import
-  # One-time step
   say "$g==>$x Verifying GPG signature integrity"
   sha_url="https://cli.codecov.io"
   sha_url="${sha_url}/${CODECOV_VERSION}/${CODECOV_OS}"
