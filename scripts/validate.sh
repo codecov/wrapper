@@ -3,6 +3,10 @@
 if [ "$CODECOV_SKIP_VALIDATION" == "true" ] || [ -n "$CODECOV_BINARY" ] || [ "$CODECOV_USE_PYPI" == "true" ];
 then
   say "$r==>$x Bypassing validation..."
+  if [ "$CODECOV_SKIP_VALIDATION" == "true" ];
+  then
+    chmod +x "$CODECOV_COMMAND"
+  fi
 else
   echo "$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)" | \
     gpg --no-default-keyring --import
@@ -42,4 +46,5 @@ fi
 if [ "$CODECOV_DOWNLOAD_ONLY" = "true" ];
 then
   say "$g==>$x ${CODECOV_CLI_TYPE} download only called. Exiting..."
+  exit
 fi
