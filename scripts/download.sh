@@ -15,7 +15,13 @@ then
     exit_if_error "Could not install via pypi."
     exit
   fi
-  CODECOV_COMMAND="${CODECOV_CLI_TYPE}"
+  if [[ "$CODECOV_CLI_TYPE" == "codecov-cli" ]]; then
+    CODECOV_COMMAND="codecovcli"
+  elif [[ "$CODECOV_CLI_TYPE" == "sentry-prevent-cli" ]]; then
+    CODECOV_COMMAND="sentry-prevent-cli"
+  else
+    CODECOV_COMMAND="${CODECOV_CLI_TYPE}"
+  fi
 else
   if [ -n "$CODECOV_OS" ];
   then
