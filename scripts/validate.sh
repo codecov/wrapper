@@ -8,8 +8,35 @@ then
     chmod +x "$CODECOV_COMMAND"
   fi
 else
-  echo "$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)" | \
-    gpg --no-default-keyring --import
+  # Import GPG key with retry logic and error handling
+  say "$g==>$x Importing GPG verification key..."
+  gpg_key_imported=false
+  for attempt in 1 2 3; do
+    say "$g ->$x Attempt $attempt to import GPG key"
+    if gpg_key=$(curl -f -s --retry 3 --retry-delay 2 https://keybase.io/codecovsecurity/pgp_keys.asc 2>&1); then
+      if [ -n "$gpg_key" ]; then
+        if echo "$gpg_key" | gpg --no-default-keyring --import 2>&1; then
+          gpg_key_imported=true
+          say "$g==>$x GPG key imported successfully"
+          break
+        else
+          say "$y==>$x GPG import failed on attempt $attempt"
+        fi
+      else
+        say "$y==>$x Empty GPG key received on attempt $attempt"
+      fi
+    else
+      say "$y==>$x Failed to download GPG key on attempt $attempt"
+    fi
+    if [ $attempt -lt 3 ]; then
+      sleep 2
+    fi
+  done
+
+  if [ "$gpg_key_imported" = false ]; then
+    exit_if_error "Failed to import GPG key after 3 attempts. Please check network connectivity or try setting CODECOV_SKIP_VALIDATION=true"
+  fi
+
   # One-time step
   say "$g==>$x Verifying GPG signature integrity"
   sha_url="https://cli.codecov.io"
