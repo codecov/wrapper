@@ -19,8 +19,6 @@ then
     CODECOV_COMMAND="codecovcli"
   elif [[ "$CODECOV_CLI_TYPE" == "sentry-prevent-cli" ]]; then
     CODECOV_COMMAND="sentry-prevent-cli"
-  else
-    CODECOV_COMMAND="${CODECOV_CLI_TYPE}"
   fi
 else
   if [ -n "$CODECOV_OS" ];

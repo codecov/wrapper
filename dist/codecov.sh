@@ -73,8 +73,6 @@ then
     CC_COMMAND="codecovcli"
   elif [[ "$CC_CLI_TYPE" == "sentry-prevent-cli" ]]; then
     CC_COMMAND="sentry-prevent-cli"
-  else
-    CC_COMMAND="${CC_CLI_TYPE}"
   fi
 else
   if [ -n "$CC_OS" ];

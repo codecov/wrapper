@@ -63,4 +63,4 @@ def _get_script_from_line(line):
 
 if __name__=="__main__":
     package_scripts('scripts', 'run.sh', 'dist/codecov.sh')
-    package_scripts('scripts', 'run.sh', 'dist/prevent.sh')
+    # package_scripts('scripts', 'run.sh', 'dist/prevent.sh')
