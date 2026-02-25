@@ -71,6 +71,11 @@ then
   fi
   CC_COMMAND="${CC_CLI_TYPE}"
 else
+  CC_DOWNLOAD_DIR=$(mktemp -d)
+  cleanup_downloads() {
+    rm -rf "$CC_DOWNLOAD_DIR"
+  }
+  trap cleanup_downloads EXIT
   if [ -n "$CC_OS" ];
   then
     say "$g==>$x Overridden OS: $b${CC_OS}$x"
@@ -87,7 +92,7 @@ else
   fi
   CC_FILENAME="${CC_CLI_TYPE%-cli}"
   [[ $CC_OS == "windows" ]] && CC_FILENAME+=".exe"
-  CC_COMMAND="./$CC_FILENAME"
+  CC_COMMAND="$CC_DOWNLOAD_DIR/$CC_FILENAME"
   [[ $CC_OS == "macos" ]]  && \
     ! command -v gpg 2>&1 >/dev/null && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
@@ -95,7 +100,7 @@ else
   CC_URL="$CC_URL/${CC_VERSION}"
   CC_URL="$CC_URL/${CC_OS}/${CC_FILENAME}"
   say "$g ->$x Downloading $b${CC_URL}$x"
-  curl -O $retry "$CC_URL"
+  curl -o "$CC_DOWNLOAD_DIR/$CC_FILENAME" $retry "$CC_URL"
   say "$g==>$x Finishing downloading $b${CC_OS}:${CC_VERSION}$x"
   v_url="https://cli.codecov.io/api/${CC_OS}/${CC_VERSION}"
   v=$(curl $retry --retry-all-errors -s "$v_url" -H "Accept:application/json" | tr \{ '\n' | tr , '\n' | tr \} '\n' | grep "\"version\"" | awk  -F'"' '{print $4}' | tail -1)
@@ -110,9 +115,19 @@ then
     chmod +x "$CC_COMMAND"
   fi
 else
-  echo "$(curl -s https://keybase.io/codecovsecurity/pgp_keys.asc)" | \
-    gpg --no-default-keyring --import
-  # One-time step
+  gpg_key_url="https://keybase.io/codecovsecurity/pgp_keys.asc"
+  gpg_import_ok=false
+  for gpg_attempt in 1 2 3; do
+    if curl -sf $retry "$gpg_key_url" | gpg --no-default-keyring --import 2>/dev/null; then
+      gpg_import_ok=true
+      break
+    fi
+    say "$r ->$x GPG key import attempt $gpg_attempt failed, retrying..."
+    sleep 2
+  done
+  if [ "$gpg_import_ok" != "true" ]; then
+    exit_if_error "Could not import GPG verification key after 3 attempts. Please contact Codecov if problem continues"
+  fi
   say "$g==>$x Verifying GPG signature integrity"
   sha_url="https://cli.codecov.io"
   sha_url="${sha_url}/${CC_VERSION}/${CC_OS}"
@@ -120,14 +135,14 @@ else
   say "$g ->$x Downloading $b${sha_url}$x"
   say "$g ->$x Downloading $b${sha_url}.sig$x"
   say " "
-  curl -Os $retry --connect-timeout 2 "$sha_url"
-  curl -Os $retry --connect-timeout 2 "${sha_url}.sig"
-  if ! gpg --verify "${CC_FILENAME}.SHA256SUM.sig" "${CC_FILENAME}.SHA256SUM";
+  curl -o "$CC_DOWNLOAD_DIR/${CC_FILENAME}.SHA256SUM" -s $retry --connect-timeout 2 "$sha_url"
+  curl -o "$CC_DOWNLOAD_DIR/${CC_FILENAME}.SHA256SUM.sig" -s $retry --connect-timeout 2 "${sha_url}.sig"
+  if ! gpg --verify "$CC_DOWNLOAD_DIR/${CC_FILENAME}.SHA256SUM.sig" "$CC_DOWNLOAD_DIR/${CC_FILENAME}.SHA256SUM";
   then
     exit_if_error "Could not verify signature. Please contact Codecov if problem continues"
   fi
-  if ! (shasum -a 256 -c "${CC_FILENAME}.SHA256SUM" 2>/dev/null || \
-    sha256sum -c "${CC_FILENAME}.SHA256SUM");
+  if ! (cd "$CC_DOWNLOAD_DIR" && (shasum -a 256 -c "${CC_FILENAME}.SHA256SUM" 2>/dev/null || \
+    sha256sum -c "${CC_FILENAME}.SHA256SUM"));
   then
     exit_if_error "Could not verify SHASUM. Please contact Codecov if problem continues"
   fi
@@ -137,11 +152,16 @@ else
 fi
 if [ -n "$CC_BINARY_LOCATION" ];
 then
-  mkdir -p "$CC_BINARY_LOCATION" && mv "$CC_FILENAME" $_
+  mkdir -p "$CC_BINARY_LOCATION" && mv "$CC_COMMAND" "$CC_BINARY_LOCATION/$CC_FILENAME"
+  CC_COMMAND="$CC_BINARY_LOCATION/$CC_FILENAME"
   say "$g==>$x ${CC_CLI_TYPE} binary moved to ${CC_BINARY_LOCATION}"
 fi
 if [ "$CC_DOWNLOAD_ONLY" = "true" ];
 then
+  if [ -n "$CC_DOWNLOAD_DIR" ] && [ -z "$CC_BINARY_LOCATION" ]; then
+    cp "$CC_COMMAND" "./$CC_FILENAME"
+    CC_COMMAND="./$CC_FILENAME"
+  fi
   say "$g==>$x ${CC_CLI_TYPE} download only called. Exiting..."
   exit
 fi
