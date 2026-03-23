@@ -8,5 +8,5 @@ fi
 cd .git/hooks
 for i in pre-commit; do
     rm -fv $i
-    ln -sv ../../hooks/$i
+    ln -sv ../../hooks/$0
 done
