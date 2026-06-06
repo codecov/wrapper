@@ -39,6 +39,15 @@ write_bool_args() {
   fi
 }
 
+parse_bool() {
+  if [ "$1" == "true" ] || [ "$1" == "1" ];
+  then
+    echo "true"
+  else
+    echo "false"
+  fi
+}
+
 b="\033[0;36m"  # variables/constants
 g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors

@@ -32,6 +32,14 @@ write_bool_args() {
     echo "-$(lower $1)"
   fi
 }
+parse_bool() {
+  if [ "$1" == "true" ] || [ "$1" == "1" ];
+  then
+    echo "true"
+  else
+    echo "false"
+  fi
+}
 b="\033[0;36m"  # variables/constants
 g="\033[0;32m"  # info/debug
 r="\033[0;31m"  # errors
@@ -102,10 +110,12 @@ else
   say "      Version: $b$v$x"
   say " "
 fi
-if [ "$CC_SKIP_VALIDATION" == "true" ] || [ -n "$CC_BINARY" ] || [ "$CC_USE_PYPI" == "true" ];
+skip_validation="$(parse_bool "$CC_SKIP_VALIDATION")"
+use_pypi="$(parse_bool "$CC_USE_PYPI")"
+if [ "$skip_validation" == "true" ] || [ -n "$CC_BINARY" ] || [ "$use_pypi" == "true" ];
 then
   say "$r==>$x Bypassing validation..."
-  if [ "$CC_SKIP_VALIDATION" == "true" ];
+  if [ "$skip_validation" == "true" ];
   then
     chmod +x "$CC_COMMAND"
   fi
