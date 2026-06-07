@@ -39,19 +39,8 @@ def _get_vars(line):
 
 def _parse(file):
     lines = []
-    in_pgp_block = False
     with open(file, 'r') as f:
         for line in f.readlines():
-            # Preserve embedded ASCII-armored PGP keys verbatim: blank lines and
-            # casing are significant, so skip the usual stripping/shortening.
-            if 'BEGIN PGP PUBLIC KEY BLOCK' in line:
-                in_pgp_block = True
-            if in_pgp_block:
-                lines.append(line)
-                if 'END PGP PUBLIC KEY BLOCK' in line:
-                    in_pgp_block = False
-                continue
-
             if line == BASH_LINE or line == '\n':
                 continue
 
