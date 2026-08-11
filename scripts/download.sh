@@ -23,6 +23,15 @@ then
     CODECOV_COMMAND="${CODECOV_CLI_TYPE}"
   fi
 else
+  CODECOV_DOWNLOAD_DIR="."
+  if [ "$CODECOV_CLEANUP" == "true" ]; then
+    CODECOV_DOWNLOAD_DIR=$(mktemp -d)
+    cleanup_downloads() {
+      rm -rf "$CODECOV_DOWNLOAD_DIR"
+    }
+    trap cleanup_downloads EXIT
+  fi
+
   if [ -n "$CODECOV_OS" ];
   then
     say "$g==>$x Overridden OS: $b${CODECOV_OS}$x"
@@ -40,7 +49,7 @@ else
 
   CODECOV_FILENAME="${CODECOV_CLI_TYPE%-cli}"
   [[ $CODECOV_OS == "windows" ]] && CODECOV_FILENAME+=".exe"
-  CODECOV_COMMAND="./$CODECOV_FILENAME"
+  CODECOV_COMMAND="$CODECOV_DOWNLOAD_DIR/$CODECOV_FILENAME"
   [[ $CODECOV_OS == "macos" ]]  && \
     ! command -v gpg 2>&1 >/dev/null && \
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gpg
@@ -48,7 +57,7 @@ else
   CODECOV_URL="$CODECOV_URL/${CODECOV_VERSION}"
   CODECOV_URL="$CODECOV_URL/${CODECOV_OS}/${CODECOV_FILENAME}"
   say "$g ->$x Downloading $b${CODECOV_URL}$x"
-  curl -O $retry "$CODECOV_URL"
+  curl -o "$CODECOV_COMMAND" $retry "$CODECOV_URL"
   say "$g==>$x Finishing downloading $b${CODECOV_OS}:${CODECOV_VERSION}$x"
 
   v_url="https://cli.codecov.io/api/${CODECOV_OS}/${CODECOV_VERSION}"

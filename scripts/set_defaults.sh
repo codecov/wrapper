@@ -5,6 +5,7 @@ CODECOV_VERSION="${CODECOV_VERSION:-latest}"
 CODECOV_FAIL_ON_ERROR="${CODECOV_FAIL_ON_ERROR:-false}"
 CODECOV_RUN_CMD="${CODECOV_RUN_CMD:-upload-coverage}"
 CODECOV_CLI_TYPE=${CODECOV_CLI_TYPE:-"codecov-cli"}
+CODECOV_CLEANUP="${CODECOV_CLEANUP:-false}"
 
 say "     _____          _
     / ____|        | |
