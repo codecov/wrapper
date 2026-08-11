@@ -64,7 +64,7 @@ then
   else
     exit_if_error "Could not find binary file $CC_BINARY"
   fi
-elif [ "$CC_USE_PYPI" == "true" ];
+elif [ "$CC_USE_PYPI" == "true" ] || [ "$CC_USE_PYPI" == "1" ];
 then
   if ! pip install "${CC_CLI_TYPE}$([ "$CC_VERSION" == "latest" ] && echo "" || echo "==$CC_VERSION")"; then
     exit_if_error "Could not install via pypi."
@@ -117,10 +117,10 @@ else
   say "      Version: $b$v$x"
   say " "
 fi
-if [ "$CC_SKIP_VALIDATION" == "true" ] || [ -n "$CC_BINARY" ] || [ "$CC_USE_PYPI" == "true" ];
+if [ "$CC_SKIP_VALIDATION" == "true" ] || [ "$CC_SKIP_VALIDATION" == "1" ] || [ -n "$CC_BINARY" ] || [ "$CC_USE_PYPI" == "true" ] || [ "$CC_USE_PYPI" == "1" ];
 then
   say "$r==>$x Bypassing validation..."
-  if [ "$CC_SKIP_VALIDATION" == "true" ];
+  if [ "$CC_SKIP_VALIDATION" == "true" ] || [ "$CC_SKIP_VALIDATION" == "1" ];
   then
     chmod +x "$CC_COMMAND"
   fi
