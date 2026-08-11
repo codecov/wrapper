@@ -9,7 +9,7 @@ then
   else
     exit_if_error "Could not find binary file $CODECOV_BINARY"
   fi
-elif [ "$CODECOV_USE_PYPI" == "true" ];
+elif [ "$CODECOV_USE_PYPI" == "true" ] || [ "$CODECOV_USE_PYPI" == "1" ];
 then
   if ! pip install "${CODECOV_CLI_TYPE}$([ "$CODECOV_VERSION" == "latest" ] && echo "" || echo "==$CODECOV_VERSION")"; then
     exit_if_error "Could not install via pypi."

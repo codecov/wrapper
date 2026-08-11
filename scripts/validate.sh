@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-if [ "$CODECOV_SKIP_VALIDATION" == "true" ] || [ -n "$CODECOV_BINARY" ] || [ "$CODECOV_USE_PYPI" == "true" ];
+if [ "$CODECOV_SKIP_VALIDATION" == "true" ] || [ "$CODECOV_SKIP_VALIDATION" == "1" ] || [ -n "$CODECOV_BINARY" ] || [ "$CODECOV_USE_PYPI" == "true" ] || [ "$CODECOV_USE_PYPI" == "1" ];
 then
   say "$r==>$x Bypassing validation..."
-  if [ "$CODECOV_SKIP_VALIDATION" == "true" ];
+  if [ "$CODECOV_SKIP_VALIDATION" == "true" ] || [ "$CODECOV_SKIP_VALIDATION" == "1" ];
   then
     chmod +x "$CODECOV_COMMAND"
   fi
