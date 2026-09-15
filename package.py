@@ -25,16 +25,15 @@ def package_scripts(source_dir, source_root, outfile):
             f.write(f'{var}\n')
 
 def _get_vars(line):
-    matcher = r'(CODECOV_[\w_]+)'
-    matches = re.search(matcher, line)
-    if matches and matches.groups():
-        return matches.groups()[0]
-
     matcher = r'v_arg ([\w_]+)'
     matches = re.search(matcher, line)
     if matches and matches.groups():
         return f"CC_{matches.groups()[0]}"
 
+    matcher = r'(CC_[\w_]+)'
+    matches = re.search(matcher, line)
+    if matches and matches.groups():
+        return matches.groups()[0]
     return ''
 
 def _parse(file):
@@ -63,4 +62,3 @@ def _get_script_from_line(line):
 
 if __name__=="__main__":
     package_scripts('scripts', 'run.sh', 'dist/codecov.sh')
-    package_scripts('scripts', 'run.sh', 'dist/prevent.sh')
