@@ -12,8 +12,6 @@ CODECOV_ARGS+=( $(k_arg SLUG) $(v_arg SLUG))
 CODECOV_ARGS+=( $(k_arg CODE) $(v_arg CODE))
 
 # Args for do upload
-CODECOV_ARGS+=( $(k_arg ENV) $(v_arg ENV))
-
 OLDIFS=$IFS;IFS=,
 
 CODECOV_ARGS+=( $(k_arg BRANCH) $(v_arg BRANCH))
@@ -23,6 +21,13 @@ CODECOV_ARGS+=( $(k_arg DIR) $(v_arg DIR))
 CODECOV_ARGS+=( $(write_bool_args CODECOV_DISABLE_FILE_FIXES) )
 CODECOV_ARGS+=( $(write_bool_args CODECOV_DISABLE_SEARCH) )
 CODECOV_ARGS+=( $(write_bool_args CODECOV_DRY_RUN) )
+
+if [ -n "$CODECOV_ENV" ];
+then
+  for env in $CODECOV_ENV; do
+    CODECOV_ARGS+=( "--env" "$env" )
+  done
+fi
 
 if [ -n "$CODECOV_EXCLUDES" ];
 then

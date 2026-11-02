@@ -199,7 +199,6 @@ CC_ARGS+=( $(k_arg SLUG) $(v_arg SLUG))
 # Args for create report
 CC_ARGS+=( $(k_arg CODE) $(v_arg CODE))
 # Args for do upload
-CC_ARGS+=( $(k_arg ENV) $(v_arg ENV))
 OLDIFS=$IFS;IFS=,
 CC_ARGS+=( $(k_arg BRANCH) $(v_arg BRANCH))
 CC_ARGS+=( $(k_arg BUILD) $(v_arg BUILD))
@@ -208,6 +207,12 @@ CC_ARGS+=( $(k_arg DIR) $(v_arg DIR))
 CC_ARGS+=( $(write_bool_args CC_DISABLE_FILE_FIXES) )
 CC_ARGS+=( $(write_bool_args CC_DISABLE_SEARCH) )
 CC_ARGS+=( $(write_bool_args CC_DRY_RUN) )
+if [ -n "$CC_ENV" ];
+then
+  for env in $CC_ENV; do
+    CC_ARGS+=( "--env" "$env" )
+  done
+fi
 if [ -n "$CC_EXCLUDES" ];
 then
   for directory in $CC_EXCLUDES; do
