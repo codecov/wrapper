@@ -110,7 +110,7 @@ else
   CC_URL="$CC_URL/${CC_VERSION}"
   CC_URL="$CC_URL/${CC_OS}/${CC_FILENAME}"
   say "$g ->$x Downloading $b${CC_URL}$x"
-  curl -o "$CC_COMMAND" $retry "$CC_URL"
+  curl -o "$CC_COMMAND" $retry --retry-all-errors "$CC_URL"
   say "$g==>$x Finishing downloading $b${CC_OS}:${CC_VERSION}$x"
   v_url="https://cli.codecov.io/api/${CC_OS}/${CC_VERSION}"
   v=$(curl $retry --retry-all-errors -s "$v_url" -H "Accept:application/json" | tr \{ '\n' | tr , '\n' | tr \} '\n' | grep "\"version\"" | awk  -F'"' '{print $4}' | tail -1)
