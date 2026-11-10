@@ -57,7 +57,7 @@ else
   CODECOV_URL="$CODECOV_URL/${CODECOV_VERSION}"
   CODECOV_URL="$CODECOV_URL/${CODECOV_OS}/${CODECOV_FILENAME}"
   say "$g ->$x Downloading $b${CODECOV_URL}$x"
-  curl -o "$CODECOV_COMMAND" $retry "$CODECOV_URL"
+  curl -o "$CODECOV_COMMAND" $retry --retry-all-errors "$CODECOV_URL"
   say "$g==>$x Finishing downloading $b${CODECOV_OS}:${CODECOV_VERSION}$x"
 
   v_url="https://cli.codecov.io/api/${CODECOV_OS}/${CODECOV_VERSION}"
